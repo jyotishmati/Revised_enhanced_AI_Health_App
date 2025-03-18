@@ -90,7 +90,6 @@
 //   //   }
 //   // }, [userDocuments]);
 
-
 //   // Handle click on a document to view details
 //   const handleDocumentClick = (document: any) => {
 //     setSelectedDocument(document);
@@ -292,8 +291,11 @@
 //   closeButtonText: { color: "white", fontWeight: "bold" },
 // });
 
+// import * as Linking from "expo-linking";
+import { Platform, Linking } from "react-native";
 
-
+import * as FileSystem from "expo-file-system";
+import * as Sharing from "expo-sharing";
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -309,9 +311,10 @@ import {
 } from "react-native";
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import * as DocumentPicker from "expo-document-picker";
-import * as FileSystem from "expo-file-system";
+
 import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
-import { RootStackParamList } from "./types"; // adjust the path as needed
+import { RootStackParamList } from "./types";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type DocumentManagerRouteProp = RouteProp<
   RootStackParamList,
@@ -320,20 +323,26 @@ type DocumentManagerRouteProp = RouteProp<
 
 const { width } = Dimensions.get("window");
 const scale = (size: number) => (width / 375) * size; // Base width is 375
+type Document = {
+  id: string;
+  name: string;
+  date: string;
+  uri: string;
+};
 
 const DocumentManagerScreen: React.FC = () => {
+ 
   const route = useRoute<DocumentManagerRouteProp>();
   const navigation = useNavigation();
   // Retrieve the date passed from CalendarScreen (if any)
   const selectedDateParam = route.params?.date ?? null;
+  console.log(selectedDateParam);
 
   const [userDocuments, setUserDocuments] = useState<any[]>([]);
   const [search, setSearch] = useState("");
   const [isFloatingMenuVisible, setFloatingMenuVisible] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState<any | null>(null);
   const [isModalVisible, setModalVisible] = useState(false);
-
-  // Handle File Upload
   const handleUpload = async () => {
     if (!selectedDateParam) {
       Alert.alert(
@@ -343,32 +352,101 @@ const DocumentManagerScreen: React.FC = () => {
       return;
     }
 
-    const result = await DocumentPicker.getDocumentAsync({
-      type: "application/pdf",
-    });
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: "application/pdf",
+      });
 
-    if (result.canceled) return;
+      if (result.canceled) return;
 
-    const newDocument = {
-      id: `${userDocuments.length + 1}`,
-      name: result.assets[0].name,
-      date: selectedDateParam, // Use the selected date from the calendar
-    };
+      const newDocument: Document = {
+        id: `${Date.now()}`,
+        name: result.assets[0].name,
+        date: selectedDateParam,
+        uri: result.assets[0].uri,
+      };
 
-    // Log the document details (file name and date)
-    console.log("Uploaded file:", newDocument.name, "on date:", newDocument.date);
+      const updatedDocuments = [...userDocuments, newDocument];
 
-    setUserDocuments((prevDocs) => [...prevDocs, newDocument]);
-    setFloatingMenuVisible(false);
+      await AsyncStorage.setItem("documents", JSON.stringify(updatedDocuments));
+
+      setUserDocuments(updatedDocuments);
+      console.log(
+        "Uploaded file:",
+        newDocument.name,
+        "on date:",
+        newDocument.date
+      );
+    } catch (error) {
+      console.error("Error uploading document:", error);
+      Alert.alert("Error", "Failed to upload document.");
+    }
   };
 
-  // Handle click on a document to view details
-  const handleDocumentClick = (document: any) => {
-    setSelectedDocument(document);
-    setModalVisible(true);
+  const handleFetch = async () => {
+    try {
+      const storedData = await AsyncStorage.getItem("documents");
+
+      if (storedData) {
+        const parsedData: Document[] = JSON.parse(storedData);
+
+        const filteredDocuments = parsedData.filter(
+          (doc) => doc.date === selectedDateParam
+        );
+
+        setUserDocuments(filteredDocuments);
+        console.log(
+          "Fetched documents for date:",
+          selectedDateParam,
+          filteredDocuments
+        );
+      } else {
+        console.log("No saved documents found");
+      }
+    } catch (error) {
+      console.error("Error fetching documents:", error);
+    }
   };
 
-  // Filter documents based on search input
+  useEffect(() => {
+    handleFetch();
+  }, []);
+  const handleDocumentClick = async (document: any) => {
+    try {
+      if (!document.uri) {
+        alert("No valid URI found");
+        return;
+      }
+
+      if (Platform.OS === "web") {
+        // If it's a remote file, try using a proxy for CORS issues
+        if (document.uri.startsWith("http")) {
+          await Linking.openURL(
+            `https://cors-anywhere.herokuapp.com/${document.uri}`
+          );
+        } else {
+          // For local files, use blob URLs
+          const response = await fetch(document.uri);
+          const blob = await response.blob();
+          const url = URL.createObjectURL(blob);
+          window.open(url, "_blank");
+        }
+      } else {
+        // For Android and iOS
+        const fileInfo = await FileSystem.getInfoAsync(document.uri);
+
+        if (fileInfo.exists) {
+          await Sharing.shareAsync(document.uri);
+        } else {
+          alert("File not found");
+        }
+      }
+    } catch (error) {
+      console.error("Error opening document:", error);
+      alert("Failed to open document");
+    }
+  };
+
   const filteredDocuments = userDocuments.filter((document) =>
     document.name.toLowerCase().includes(search.toLowerCase())
   );
@@ -490,21 +568,21 @@ const DocumentManagerScreen: React.FC = () => {
 export default DocumentManagerScreen;
 
 const styles = StyleSheet.create({
-  container: { 
-    flex: 1, 
-    backgroundColor: "#F5F5F5", 
-    padding: scale(16) 
+  container: {
+    flex: 1,
+    backgroundColor: "#F5F5F5",
+    padding: scale(16),
   },
-  header: { 
-    flexDirection: "row", 
-    alignItems: "center", 
-    marginBottom: scale(16) 
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: scale(16),
   },
-  headerText: { 
-    marginLeft: scale(12), 
-    fontSize: scale(18), 
-    fontWeight: "600", 
-    color: "#0C3C5F" 
+  headerText: {
+    marginLeft: scale(12),
+    fontSize: scale(18),
+    fontWeight: "600",
+    color: "#0C3C5F",
   },
   searchContainer: {
     backgroundColor: "#0C3C5F",
@@ -520,10 +598,10 @@ const styles = StyleSheet.create({
     borderRadius: scale(50),
     height: scale(40),
   },
-  searchInput: { 
-    marginLeft: scale(10), 
-    flex: 1, 
-    fontSize: scale(16) 
+  searchInput: {
+    marginLeft: scale(10),
+    flex: 1,
+    fontSize: scale(16),
   },
   documentActions: {
     flexDirection: "row",
@@ -531,18 +609,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: scale(16),
   },
-  documentCount: { 
-    fontSize: scale(18), 
-    fontWeight: "600" 
+  documentCount: {
+    fontSize: scale(18),
+    fontWeight: "600",
   },
-  sortActions: { 
-    flexDirection: "row", 
-    alignItems: "center" 
+  sortActions: {
+    flexDirection: "row",
+    alignItems: "center",
   },
-  sortText: { 
-    fontSize: scale(16), 
-    color: "gray", 
-    marginRight: scale(8) 
+  sortText: {
+    fontSize: scale(16),
+    color: "gray",
+    marginRight: scale(8),
   },
   addButton: {
     marginLeft: scale(12),
@@ -562,34 +640,34 @@ const styles = StyleSheet.create({
     width: "48%",
     borderRadius: scale(8),
   },
-  documentImage: { 
-    width: "100%", 
-    height: scale(100), 
-    borderRadius: scale(8) 
+  documentImage: {
+    width: "100%",
+    height: scale(100),
+    borderRadius: scale(8),
   },
-  documentTitle: { 
-    fontSize: scale(14), 
-    fontWeight: "600", 
-    marginTop: scale(8) 
+  documentTitle: {
+    fontSize: scale(14),
+    fontWeight: "600",
+    marginTop: scale(8),
   },
-  documentDate: { 
-    fontSize: scale(12), 
-    color: "gray" 
+  documentDate: {
+    fontSize: scale(12),
+    color: "gray",
   },
-  noDocumentsContainer: { 
-    flex: 1, 
-    justifyContent: "center", 
-    alignItems: "center" 
+  noDocumentsContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  noDocumentsImage: { 
-    width: scale(120), 
-    height: scale(120), 
-    marginBottom: scale(12) 
+  noDocumentsImage: {
+    width: scale(120),
+    height: scale(120),
+    marginBottom: scale(12),
   },
-  noDocumentsText: { 
-    fontSize: scale(16), 
-    color: "gray", 
-    marginBottom: scale(12) 
+  noDocumentsText: {
+    fontSize: scale(16),
+    color: "gray",
+    marginBottom: scale(12),
   },
   floatingMenuOverlay: {
     flex: 1,
@@ -597,19 +675,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  floatingMenu: { 
-    backgroundColor: "white", 
-    padding: scale(16), 
-    borderRadius: scale(8) 
+  floatingMenu: {
+    backgroundColor: "white",
+    padding: scale(16),
+    borderRadius: scale(8),
   },
-  menuTitle: { 
-    fontSize: scale(18), 
-    fontWeight: "600", 
-    marginBottom: scale(8) 
+  menuTitle: {
+    fontSize: scale(18),
+    fontWeight: "600",
+    marginBottom: scale(8),
   },
-  menuItem: { 
-    fontSize: scale(16), 
-    paddingVertical: scale(8) 
+  menuItem: {
+    fontSize: scale(16),
+    paddingVertical: scale(8),
   },
   modalContainer: {
     flex: 1,
@@ -617,29 +695,29 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "rgba(0,0,0,0.5)",
   },
-  modalContent: { 
-    backgroundColor: "white", 
-    padding: scale(20), 
-    borderRadius: scale(8), 
-    alignItems: "center" 
+  modalContent: {
+    backgroundColor: "white",
+    padding: scale(20),
+    borderRadius: scale(8),
+    alignItems: "center",
   },
-  modalTitle: { 
-    fontSize: scale(18), 
-    fontWeight: "bold", 
-    marginBottom: scale(10) 
+  modalTitle: {
+    fontSize: scale(18),
+    fontWeight: "bold",
+    marginBottom: scale(10),
   },
-  modalText: { 
-    fontSize: scale(16), 
-    marginBottom: scale(5) 
+  modalText: {
+    fontSize: scale(16),
+    marginBottom: scale(5),
   },
-  closeButton: { 
-    marginTop: scale(10), 
-    padding: scale(10), 
-    backgroundColor: "#0C3C5F", 
-    borderRadius: scale(5) 
+  closeButton: {
+    marginTop: scale(10),
+    padding: scale(10),
+    backgroundColor: "#0C3C5F",
+    borderRadius: scale(5),
   },
-  closeButtonText: { 
-    color: "white", 
-    fontWeight: "bold" 
+  closeButtonText: {
+    color: "white",
+    fontWeight: "bold",
   },
 });

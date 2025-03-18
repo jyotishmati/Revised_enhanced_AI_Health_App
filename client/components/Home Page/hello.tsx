@@ -133,37 +133,70 @@
 // export default HealthCard;
 
 
-import React from "react";
+import { loadUserData } from "@/api/IndexDB";
+import React, { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { Svg, Circle, Text as SvgText } from "react-native-svg";
 
 const { width } = Dimensions.get("window");
+import { navigate } from "expo-router/build/global-state/routing";
 const scale = (size: number) => (width / 375) * size;
 
 const HealthCard = () => {
   const healthScore = 63;
-  const radius = 40; // Circle size remains fixed relative to viewBox
+  const radius = 40; 
   const strokeWidth = 6;
   const circumference = 2 * Math.PI * radius;
   const progress = (healthScore / 100) * circumference;
+  const [userData, setUserData] = useState<any>(null);
+  const navigation = useNavigation();
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
 
+    const fetchData = async () => {
+      try {
+        const userDetails = await loadUserData(); 
+        if(!userDetails){
+          navigation.navigate("Profile" as never);
+        }
+        console.log("User details:", userDetails);
+        setUserData(userDetails);
+      } catch (error) {
+        console.error("Failed to load user data:", error);
+      } finally {
+        setLoading(false); 
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+  
   return (
     <View style={styles.container}>
       {/* Left Section */}
       <View style={styles.leftSection}>
         <View style={styles.greetingContainer}>
-          <Text style={styles.greetingText}>Hello Nandan!</Text>
+          <Text style={styles.greetingText}> Hello {userData?.name || "Guest"}!</Text>
           <Text style={styles.waveEmoji}>👋</Text>
         </View>
 
-        <Text style={styles.subtitle}>You have 2 appointments today!</Text>
+        <Text style={styles.subtitle}>You have 0 appointments today!</Text>
 
         <Text style={styles.sectionTitle}>Health Score</Text>
         <Text style={styles.infoText}>
-          Blood Type: <Text style={styles.boldText}>B +ve</Text>
+          Blood Type: <Text style={styles.boldText}>{userData?.bloodType || "N/A"}</Text>
         </Text>
         <Text style={styles.infoText}>
-          Age: <Text style={styles.boldText}>23</Text>
+          Age: <Text style={styles.boldText}>{userData?.age || "N/A"}</Text>
         </Text>
       </View>
 

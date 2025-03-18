@@ -1,5 +1,10 @@
 {
   "expo": {
+    "permissions": [
+      "CAMERA",
+      "READ_EXTERNAL_STORAGE",
+      "WRITE_EXTERNAL_STORAGE"
+    ],
     "name": "AI_Health",
     "slug": "AI_Health",
     "version": "1.0.0",

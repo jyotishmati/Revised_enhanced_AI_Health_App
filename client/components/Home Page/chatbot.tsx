@@ -7,21 +7,19 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-import { Feather } from "@expo/vector-icons"; // Icons
+import { Feather } from "@expo/vector-icons"; 
 
 const ChatScreen = () => {
   return (
     <View style={styles.container}>
-      {/* Header Section */}
       <Text style={styles.title}>Med AI Bot</Text>
       <Text style={styles.subtitle}>Your medical AI companion</Text>
       <View style={styles.underline} />
 
-      {/* Bot Message */}
       <View style={styles.botMessageContainer}>
         <View style={styles.botMessage}>
           <Image
-            source={require("../../assets/images/bot-icion.png")} // Ensure correct path
+            source={require("../../assets/images/bot-icion.png")} 
             style={styles.botIcon}
           />
           <Text style={styles.botText}>

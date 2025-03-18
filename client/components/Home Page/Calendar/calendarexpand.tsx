@@ -244,9 +244,7 @@ const CalendarScreen = () => {
                 ))}
               </View>
 
-              {/* Calendar Grid */}
               <View style={styles.daysContainer}>
-                {/* Empty spaces for first week alignment */}
                 {Array.from({ length: firstDay }).map((_, i) => (
                   <View key={`empty-${i}`} style={styles.emptyDay} />
                 ))}
