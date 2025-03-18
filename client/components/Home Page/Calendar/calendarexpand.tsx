@@ -144,6 +144,7 @@
 
 
 import React, { useState } from "react";
+import { useRef, useEffect } from "react";
 import { 
   View, 
   Text, 
@@ -178,6 +179,7 @@ const CalendarScreen = () => {
   const todayMonth = today.getMonth();
 
   const [selectedYear, setSelectedYear] = useState(currentYear);
+  const scrollViewRef = useRef<ScrollView>(null);
 
   const months = [
     "January", "February", "March", "April", "May", "June",
@@ -188,7 +190,16 @@ const CalendarScreen = () => {
     label: `${currentYear - 10 + i}`,
     value: currentYear - 10 + i,
   }));
-
+  useEffect(() => {
+    if (scrollViewRef.current) {
+      setTimeout(() => {
+        scrollViewRef.current?.scrollTo({
+          y: todayMonth * 300, 
+          animated: true,
+        });
+      }, 200); 
+    }
+  }, []);
   return (
     <View style={styles.container}>
       {/* Header with Back Button */}
@@ -217,7 +228,7 @@ const CalendarScreen = () => {
       </View>
 
       {/* Scrollable Calendar */}
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <ScrollView  ref={scrollViewRef} contentContainerStyle={styles.scrollContainer}>
         {months.map((month, monthIndex) => {
           const daysInMonth = getDaysInMonth(monthIndex, selectedYear);
           const firstDay = new Date(selectedYear, monthIndex, 1).getDay();
@@ -240,11 +251,9 @@ const CalendarScreen = () => {
                   <View key={`empty-${i}`} style={styles.emptyDay} />
                 ))}
 
-                {/* Render days of the month */}
                 {Array.from({ length: daysInMonth }, (_, index) => {
                   const dayNumber = index + 1;
                   const isToday = selectedYear === currentYear && monthIndex === todayMonth && dayNumber === todayDate;
-                  // Construct a date string, e.g., "2025-03-10"
                   const dateString = `${selectedYear}-${String(monthIndex + 1).padStart(2, "0")}-${String(dayNumber).padStart(2, "0")}`;
 
                   return (

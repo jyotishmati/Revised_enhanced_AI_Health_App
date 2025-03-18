@@ -58,25 +58,35 @@ export const verifyEmail = async ({ otp }: IOTP) => {
     if (!token) {
       throw new Error("No token found, please log in again.");
     }
+    console.log(token);
 
     const response = await apiClient.post(
       "user/verify-email",
       { secret: otp },
       {
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       }
     );
 
-    return response.data; 
+    return response.data;
   } catch (error: any) {
     console.error("Error verifying email:", error);
 
     if (error.response) {
+      if(error.response.data?.message == "User not found"){
+        alert("User Not found")
+      }
+      if(error.response.data?.message == "Email already verified"){
+        alert("Email Already verified")
+        window.location.href = "/Login%2FSignup"
+      }
       if (error.response.status === 400) {
-        throw new Error(error.response.data?.message || "Invalid or Expired OTP.");
+        throw new Error(
+          error.response.data?.message || "Invalid or Expired OTP."
+        );
       }
       throw new Error(error.response.data?.message || "Verification failed.");
     } else if (error.request) {

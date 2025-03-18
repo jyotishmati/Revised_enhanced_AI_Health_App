@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import apiClient from "./apiClient";
 
 export const setItem = async (value: string) => {
   try {
@@ -11,7 +12,16 @@ export const setItem = async (value: string) => {
 
 export const getItem = async () => {
   try {
-    const value = await AsyncStorage.getItem("jwt_token");
+    let value = await AsyncStorage.getItem("jwt_token");
+    if(!value){
+      return null
+    }
+    if (value.includes('"')) {
+      value = value.replaceAll('"', "");
+    }
+    if (value.includes("'")) {
+      value = value.replaceAll("'", "");
+    }
     return value != null ? value : null;    
   } catch (error) {
     console.error("Error getting item:", error);
@@ -29,11 +39,11 @@ export const removeItem = async () => {
 
 export const tokenValidation = async () => {
   try {
-    const token = await AsyncStorage.getItem("jwt_token");
+    const token = await getItem();
     if(!token){
       throw new Error("User Not Login")
     }
-    const response = await axios.get("/user/verify-token", {
+    const response = await apiClient.get("/user/verify-token", {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,

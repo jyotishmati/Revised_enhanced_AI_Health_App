@@ -236,11 +236,8 @@ const HorizontalCalendar: React.FC = () => {
         (day) => format(day, "yyyy-MM-dd") === format(new Date(), "yyyy-MM-dd")
       );
       if (todayIndex >= 0) {
-        // With no side padding, visible width equals the device width.
         const scrollViewWidth = width;
-        // Each day container has marginHorizontal: scale(5) on each side (total extra width = scale(10))
         const totalDayWidth = dayWidth + scale(10);
-        // Calculate offset so that the center of today's box aligns with the center of the screen.
         const offset = todayIndex * totalDayWidth + totalDayWidth / 2 - scrollViewWidth / 2;
         const clampedOffset = Math.max(offset, 0);
         scrollViewRef.current.scrollTo({ x: clampedOffset, animated: true });
@@ -254,7 +251,6 @@ const HorizontalCalendar: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      {/* Header: Month, Year & Expand Button */}
       <View style={styles.header}>
         <Text style={styles.monthText}>{format(currentDate, "MMMM yyyy")}</Text>
         <TouchableOpacity onPress={handleExpandPress} style={styles.expandButton}>
@@ -262,7 +258,6 @@ const HorizontalCalendar: React.FC = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Horizontal Scrollable Dates */}
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -276,7 +271,6 @@ const HorizontalCalendar: React.FC = () => {
             <TouchableOpacity
               key={index}
               style={[styles.dayContainer, isToday && styles.today]}
-              // Measure the first day container's width for offset calculation
               onLayout={(event) => {
                 if (index === 0) {
                   setDayWidth(event.nativeEvent.layout.width);

@@ -38,7 +38,7 @@ export const sendVerificationEmail = async (email: string): Promise<void> => {
       from: process.env.GMAIL_USER,
       to: email,
       subject: "Email Verification",
-      text: `Your verification code is: ${secret}. It is valid for 10 minutes.`,
+      text: `Your verification code is: ${secret} It is valid for 10 minutes.`,
     };
     await transponder.sendMail(mailOption);
 
@@ -72,7 +72,7 @@ export const verifyEmail = async (req: Request, res: Response) => {
 
   if (!checkVerified) {
     return res.status(400).json({ message: "User not found" });
-  } else if (!checkVerified.emailVerified) {
+  } else if (checkVerified.emailVerified) {
     return res.status(400).json({ message: "Email already verified" });
   }
 

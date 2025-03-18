@@ -1,0 +1,27 @@
+{
+    "Hemoglobin": [13.0, 18.0, "g/dl"],
+    "Hematocrit": [39.0, 54.0, "%"],
+    "Red Blood Cells": [4.2, 6.5, "Million/uL"],
+    "MCV": [75.0, 95.0, "fl"],
+    "MCH": [26.0, 32.0, "pg"],
+    "MCHC": [31.0, 36.0, "g/dl"],
+    "RDW": [11.5, 14.5, "%"],
+    "TLC Count": [4.0, 11.0, "10^3/mm^3"],
+    "Platelets": [140.0, 440.0, "10^3/mm^3"],
+    "Sodium": [136.0, 145.0, "mEq/l"],
+    "Potassium": [3.5, 5.0, "mEq/l"],
+    "Chloride": [98.0, 107.0, "mEq/l"],
+    "Bicarbonate": [22.0, 28.0, "mEq/l"],
+    "Calcium": [8.6, 10.2, "mg/dl"],
+    "Magnesium": [1.8, 2.3, "mg/dl"],
+    "Bilirubin, Total": [0.3, 1.2, "mg/dl"],
+    "Bilirubin, Direct": [0.0, 0.19, "mg/dl"],
+    "Bilirubin, Indirect": [0.0, 0.19, "mg/dl"],
+    "Alanine Aminotransferase": [0.0, 35.0, "U/l"],
+    "Aspartate Aminotransferase": [0.0, 34.99, "U/l"],
+    "Alkaline Phosphatase": [30.0, 120.0, "U/l"],
+    "Protien": [6.6, 8.3, "g/dl"],
+    "Albumin": [3.5, 5.2, "g/dl"],
+    "A/G Ration": [0.9, 2.0, ""]
+  }
+  

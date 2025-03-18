@@ -331,7 +331,7 @@
 //     alignItems: "center",
 //     // Gap between range and value
 //     // If your RN version doesn't support "gap", use marginRight on range or marginLeft on value
-//     gap: 8, 
+//     gap: 8,
 //   },
 
 //   // TEXT STYLES
@@ -417,9 +417,7 @@
 //   },
 // });
 
-
-
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -430,92 +428,18 @@ import {
 } from "react-native";
 import { FontAwesome, Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { getMasterHealthAPI } from "@/api/masterHealthAPI";
+import masterHealthRange from "@/components/Home Page/Master Health/masterHealthRange.json";
+import masterHealthTextButton from "@/components/Home Page/Master Health/masterHeathTextButton.json";
 
 // 1) DATA INTERFACES
-interface TestData {
-  name: string;
-  range: string;
-  value: string;
-  color: string;
-}
+// interface TestData {
+//   name: string;
+//   range: string;
+//   value: string;
+//   color: string;
+// }
 
-interface PanelData {
-  title: string;
-  tests: TestData[];
-  buttonText: string[]; // e.g. ["CBC", "Differential Count"]
-}
-
-// 2) SAMPLE DATA
-const data: PanelData[] = [
-  {
-    title: "Hemogram",
-    tests: [
-      { name: "Hemoglobin", range: "13.0 - 18.0 g/dl", value: "8.0*", color: "red" },
-      { name: "Hematocrit", range: "39.0 - 54.0 %", value: "26.8*", color: "red" },
-      { name: "Red Blood Cells", range: "4.2 - 6.5 Million/uL", value: "2.95*", color: "red" },
-      { name: "MCV", range: "75.0 - 95.0 fl", value: "90.9", color: "green" },
-      { name: "MCH", range: "26.0 - 32.0 pg", value: "27.2", color: "green" },
-      { name: "MCHC", range: "31.0 - 36.0 g/dl", value: "29.9*", color: "red" },
-      { name: "RDW", range: "11.5 - 14.5 %", value: "16.5*", color: "green" },
-      { name: "TLC Count", range: "4.0 - 11.0 10^3/mm^3", value: "16.65*", color: "green" },
-      { name: "Platelets", range: "140.0 - 440.0 10^3/mm^3", value: "267", color: "green" },
-    ],
-    buttonText: ["CBC", "Differential Count"],
-  },
-  {
-    title: "Electrolytes Panel",
-    tests: [
-      { name: "Sodium", range: "136.0 - 145.0 mEq/l", value: "110.0*", color: "red" },
-      { name: "Potassium", range: "3.5 - 5.0 mEq/l", value: "8.0*", color: "red" },
-      { name: "Chloride", range: "98 - 107 mEq/l", value: "99.0", color: "green" },
-      { name: "Bicarbonate", range: "22.0 - 28.0 mEq/l", value: "25.0", color: "green" },
-      { name: "Calcium", range: "8.6 - 10.2 mg/dl", value: "18.0*", color: "red" },
-      { name: "Magnesium", range: "1.8 - 2.3 mg/dl", value: "1.9", color: "green" },
-      { name: "RDW", range: "11.5 - 14.5 %", value: "16.5*", color: "red" },
-      { name: "TLC Count", range: "4.0 - 11.0 10^/mm^3", value: "16.65*", color: "red" },
-      { name: "Platelets", range: "140 - 440 10^/mm^3", value: "267", color: "green" },
-    ],
-    buttonText: ["Electrolytes"],
-  },
-  {
-    title: "Liver Panel",
-    tests: [
-      { name: "Bilirubin, Total", range: "0.3 - 1.2 mg/dl", value: "0.47*", color: "green" },
-      { name: "Bilirubin, Direct", range: "0 - 0.19 mg/dl", value: "0.10*", color: "green" },
-      { name: "Bilirubin, Indirect", range: "0 - 0.19 mg/dl", value: "0.37", color: "green" },
-      { name: "Alanine Aminotransferase", range: "0 - 35 U/l", value: "20.0", color: "green" },
-      { name: "Aspartate Aminotransferase", range: "0 - 34.99 U/l", value: "15.0", color: "green" },
-      { name: "Alkaline Phosphatase", range: "30 - 120 U/l", value: "90.0", color: "green" },
-      { name: "Protien", range: "6.6 - 8.3 g/dl", value: "7.50", color: "green" },
-      { name: "Albumin", range: "3.5 - 5.2 g/dl", value: "4.50", color: "green" },
-      { name: "A/G Ration", range: "0.9 - 2", value: "1.5", color: "green" },
-    ],
-    buttonText: ["Liver Function"],
-  },
-  {
-    title: "Diabetes Panel",
-    tests: [
-
-    ],
-    buttonText: ["Diabetes"],
-  },
-  {
-    title: "Thyroid Panel",
-    tests: [
-      
-    ],
-    buttonText: ["Thyroid Panel"],
-  },
-  {
-    title: "Lipid Panel",
-    tests: [
-      
-    ],
-    buttonText: ["Lipid Panel"],
-  },
-];
-
-// 3) UTILITY FUNCTIONS
 function parseRange(rangeStr: string) {
   try {
     const parts = rangeStr.split("-");
@@ -573,25 +497,53 @@ const SubTestBar: React.FC<SubTestBarProps> = ({ range, valueText, color }) => {
   );
 };
 
-// 5) CATEGORY-LEVEL INDICATOR (DANGER → WARNING → NORMAL)
+type TestData = {
+  name: string;
+  value: number;
+};
+
+type RangeData = {
+  [key: string]: (string | number)[];
+};
+
 interface CategoryIndicatorProps {
   tests: TestData[];
+  ranges: RangeData;
 }
-
-const CategoryIndicator: React.FC<CategoryIndicatorProps> = ({ tests }) => {
-  // example logic: average all numeric values
+const CategoryIndicator: React.FC<CategoryIndicatorProps> = ({
+  tests,
+  ranges,
+}) => {
   let sum = 0;
   let count = 0;
-  tests.forEach((t) => {
-    const val = parseValue(t.value);
-    if (!isNaN(val)) {
-      sum += val;
-      count++;
+
+  tests.forEach((test) => {
+    const range = ranges[test.name];
+    if (range) {
+      let [min, max] = range;
+      let value: string | number = test.value;
+      if (typeof value === "string") {
+        value = parseFloat(value);
+      }
+      if (typeof min === "string") {
+        min = parseFloat(min);
+      }
+      if (typeof max === "string") {
+        max = parseFloat(max);
+      }
+      if (typeof value === "number" && !isNaN(value)) {
+        const normalizedValue = Math.max(
+          0,
+          Math.min(100, ((value - min) / (max - min)) * 100)
+        );
+        sum += normalizedValue;
+        count++;
+      }
     }
   });
   if (count === 0) count = 1;
   const avg = sum / count;
-  // assume 0-100 range
+
   const ratio = Math.min(Math.max(avg / 100, 0), 1);
   const pointerLeft = `${(ratio * 100).toFixed(2)}%`;
 
@@ -616,17 +568,33 @@ const CategoryIndicator: React.FC<CategoryIndicatorProps> = ({ tests }) => {
 
 // 6) PANEL COMPONENT
 interface HealthPanelProps {
-  title: string;
-  tests: TestData[];
-  buttonText: string[];
+  categories?: string;
+  parameters?: {
+    [key: string]: number;
+  };
 }
 
-const HealthPanel: React.FC<HealthPanelProps> = ({ title, tests, buttonText }) => {
+const HealthPanel: React.FC<HealthPanelProps> = ({
+  categories,
+  parameters,
+}) => {
+  if (!parameters) {
+    return;
+  }
+  if (Object.keys(parameters).length === 0) {
+    return;
+  }
+  console.log(parameters);
+  const tests: TestData[] = Object.entries(parameters).map(([key, value]) => ({
+    name: key,
+    value: value as number,
+  }));
+
   return (
     <View style={styles.panel}>
       {/* Header */}
       <View style={styles.panelHeader}>
-        <Text style={styles.panelTitle}>{title}</Text>
+        <Text style={styles.panelTitle}>{categories}</Text>
         <Feather name="download" size={18} color="#023047" />
       </View>
 
@@ -636,44 +604,112 @@ const HealthPanel: React.FC<HealthPanelProps> = ({ title, tests, buttonText }) =
         nestedScrollEnabled
         showsVerticalScrollIndicator={false}
       >
-        {tests.map((test, index) => (
+        {/* {parameters&&Object.entries(parameters).forEach(([key, value]) => {
           <View key={index} style={styles.testBlock}>
-            {/* Row: test name on left, range & value on right (side by side) */}
             <View style={styles.testRow}>
-              <Text style={styles.testName}>{test.name}</Text>
+              <Text style={styles.testName}>{key}</Text>
 
-              {/* Container for range + value in a row */}
               <View style={styles.rangeValueContainer}>
                 <Text style={styles.testRange}>{test.range}</Text>
-                <Text style={styles.testValue}>{test.value}</Text>
+                <Text style={styles.testValue}>{value}</Text>
               </View>
             </View>
-
-            {/* Single-color partial fill bar */}
             <SubTestBar
               range={test.range}
               valueText={test.value}
               color={test.color}
             />
           </View>
-        ))}
+        }) */}
+        {parameters &&
+          Object.entries(parameters ?? {}).map(([key, value], index) => (
+            <View key={index} style={styles.testBlock}>
+              <View style={styles.testRow}>
+                <Text style={styles.testName}>{key}</Text>
+
+                <View style={styles.rangeValueContainer}>
+                  <Text style={styles.testRange}>
+                    {
+                      masterHealthRange[
+                        key as keyof typeof masterHealthRange
+                      ]?.[0]
+                    }{" "}
+                    -{" "}
+                    {
+                      masterHealthRange[
+                        key as keyof typeof masterHealthRange
+                      ]?.[1]
+                    }{" "}
+                    {
+                      masterHealthRange[
+                        key as keyof typeof masterHealthRange
+                      ]?.[2]
+                    }
+                  </Text>
+                  <Text style={styles.testValue}>
+                    {typeof value === "string" || typeof value === "number"
+                      ? value
+                      : JSON.stringify(value)}
+                  </Text>
+                </View>
+              </View>
+              <SubTestBar
+                range={`${
+                  masterHealthRange[key as keyof typeof masterHealthRange]?.[0]
+                } - ${
+                  masterHealthRange[key as keyof typeof masterHealthRange]?.[1]
+                } ${
+                  masterHealthRange[key as keyof typeof masterHealthRange]?.[2]
+                }`}
+                valueText={value.toString()}
+                color={
+                  typeof value === "number" &&
+                  !isNaN(
+                    Number(
+                      masterHealthRange[
+                        key as keyof typeof masterHealthRange
+                      ]?.[0]
+                    )
+                  ) &&
+                  !isNaN(
+                    Number(
+                      masterHealthRange[
+                        key as keyof typeof masterHealthRange
+                      ]?.[1]
+                    )
+                  ) &&
+                  value >=
+                    Number(
+                      masterHealthRange[
+                        key as keyof typeof masterHealthRange
+                      ]?.[0]
+                    ) &&
+                  value <=
+                    Number(
+                      masterHealthRange[
+                        key as keyof typeof masterHealthRange
+                      ]?.[1]
+                    )
+                    ? "green"
+                    : "red"
+                }
+              />
+            </View>
+          ))}
       </ScrollView>
 
       {/* Buttons */}
       <View style={styles.buttonGroup}>
-        {buttonText.map((text, idx) => {
-          // We'll style the first button differently from the second.
-          // If you have more than two, you'll need a custom logic for each
-          // or a toggle approach for "active" vs. "inactive".
+        {masterHealthTextButton[
+          categories as keyof typeof masterHealthTextButton
+        ].map((text, idx) => {
           if (idx === 0) {
-            // FIRST BUTTON (white background, navy text)
             return (
               <TouchableOpacity key={idx} style={[styles.btnWhite]}>
                 <Text style={[styles.btnWhiteText]}>{text}</Text>
               </TouchableOpacity>
             );
           } else {
-            // SECOND BUTTON (navy background, white text)
             return (
               <TouchableOpacity key={idx} style={[styles.btnNavy]}>
                 <Text style={[styles.btnNavyText]}>{text}</Text>
@@ -683,14 +719,27 @@ const HealthPanel: React.FC<HealthPanelProps> = ({ title, tests, buttonText }) =
         })}
       </View>
 
-      {/* Category-level indicator */}
-      <CategoryIndicator tests={tests} />
+      <CategoryIndicator tests={tests} ranges={masterHealthRange} />
     </View>
   );
 };
 
 // 7) MAIN SCREEN
 const MasterHealthVault: React.FC = () => {
+  const [data, setData] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await getMasterHealthAPI();
+        setData(result || []);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -698,7 +747,12 @@ const MasterHealthVault: React.FC = () => {
         <FontAwesome name="arrow-left" size={20} color="black" />
         <Text style={styles.headerTitle}>Master Health Vault</Text>
         <View style={styles.iconGroup}>
-          <FontAwesome name="camera" size={20} color="black" style={styles.icon} />
+          <FontAwesome
+            name="camera"
+            size={20}
+            color="black"
+            style={styles.icon}
+          />
           <Feather name="upload" size={20} color="black" />
         </View>
       </View>
@@ -715,7 +769,6 @@ const MasterHealthVault: React.FC = () => {
 
 export default MasterHealthVault;
 
-// 8) STYLES
 const screenWidth = Dimensions.get("window").width;
 
 const NAVY_BLUE = "#003366";
