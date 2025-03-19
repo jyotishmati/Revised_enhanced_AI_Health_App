@@ -98,9 +98,6 @@ import UserModel from "../models/userModel";
 //   }
 // };
 
-
-
-
 export const updateUserDetails = async (req: Request, res: Response) => {
   try {
     const user = res.locals.user;
@@ -160,6 +157,34 @@ export const updateUserDetails = async (req: Request, res: Response) => {
       verifyEmail: true,
       isCompleteUserDetails: true,
     });
+  } catch (err: any) {
+    console.error("Error updating user details:", err);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const getUserDetails = async (req: Request, res: Response) => {
+  try {
+    const user = res.locals.user;
+    if (!user) {
+      return res.status(401).json({ message: "Token validation failed" });
+    }
+    const existingUser = await UserModel.findById(user._id);
+    if (!existingUser) {
+      res.status(404).json({
+        message: "User not found in database",
+        isValid: false,
+        verifyEmail: true,
+        isCompleteUserDetails: false,
+      });
+      return;
+    }
+    res.status(200).json({
+      message: "User message extracted successfully",
+      existingUser,
+    });
+
+    return;
   } catch (err: any) {
     console.error("Error updating user details:", err);
     res.status(500).json({ message: "Internal Server Error" });

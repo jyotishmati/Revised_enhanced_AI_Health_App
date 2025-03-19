@@ -44,7 +44,11 @@
   },
   "dependencies": {
     "@types/jsonwebtoken": "^9.0.8",
+    "amqplib": "^0.10.5",
     "crypto": "^1.0.1",
+    "firebase": "^11.4.0",
+    "firebase-admin": "^13.2.0",
+    "ioredis": "^5.6.0",
     "jsonwebtoken": "^9.0.2",
     "nodemailer": "^6.10.0",
     "nodemon": "^3.1.9"

@@ -1,7 +1,7 @@
 {
     "Hemogram": ["CBC", "Differential Count"],
     "Electrolytes Panel": ["Electrolytes"],
-    "Liver Panel": ["Liver Function"],
+    "Liver Function Test": ["Liver Function"],
     "Diabetes Panel": ["Diabetes"],
     "Thyroid Panel": ["Thyroid Panel"],
     "Lipid Panel": ["Lipid Panel"]

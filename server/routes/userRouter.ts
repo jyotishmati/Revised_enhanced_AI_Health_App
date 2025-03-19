@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import { emailPasswordVerify, protect } from "../controllers/authController";
 import { verifyEmail } from "../controllers/emailVerifier";
-import { updateUserDetails } from "../controllers/userController";
+import { getUserDetails, updateUserDetails } from "../controllers/userController";
 const router = express.Router();
 
 router.post("/login-signup", emailPasswordVerify);
@@ -19,6 +19,7 @@ router.get("/verify-token", protect, (req: Request, res: Response) => {
     }
   });
   
+router.get("/get-user-details", protect, getUserDetails)
 
 router.get("/user-working", (req, res) => {
   return res.status(200).json({ message: "Working User Successfully" });

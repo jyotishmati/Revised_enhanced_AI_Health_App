@@ -13,6 +13,7 @@ export const getBlogs = async (req: Request, res: Response) => {
       }
 
       try {
+        
         const blogs = JSON.parse(data);
         res.status(200).json({ message: "Blogs retrieved successfully", data: blogs });
       } catch (jsonError) {

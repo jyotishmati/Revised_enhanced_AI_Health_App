@@ -152,8 +152,8 @@ const HealthCard = () => {
   const [userData, setUserData] = useState<any>(null);
   const navigation = useNavigation();
   const [loading, setLoading] = useState(true);
+  
   useEffect(() => {
-
     const fetchData = async () => {
       try {
         const userDetails = await loadUserData(); 
@@ -170,7 +170,7 @@ const HealthCard = () => {
     };
 
     fetchData();
-  }, []);
+  }, [navigation]);
 
   if (loading) {
     return (
