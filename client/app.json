@@ -3,8 +3,11 @@
     "permissions": [
       "CAMERA",
       "READ_EXTERNAL_STORAGE",
-      "WRITE_EXTERNAL_STORAGE"
+      "WRITE_EXTERNAL_STORAGE",
+      "ACCESS_FINE_LOCATION",
+      "ACCESS_COARSE_LOCATION"
     ],
+    "newArchEnabled": true,
     "name": "AI_Health",
     "slug": "AI_Health",
     "version": "1.0.0",
@@ -12,15 +15,17 @@
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "newArchEnabled": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "newArchEnabled": true,
+      "package": "com.anonymous.AI_Health"
     },
     "web": {
       "bundler": "metro",

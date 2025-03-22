@@ -2,7 +2,7 @@ import apiClient from "./apiClient";
 import { calculateAge } from "./other";
 import { getItem } from "./tokenOperation";
 
-const EXPIRY_TIME = 30 * 60 * 1000;
+const EXPIRY_TIME = 12 * 60 * 60 * 1000;
 
 export const loadUserData = async () => {
   console.log("Fetching user data...");
@@ -31,8 +31,6 @@ export const loadUserData = async () => {
     const user = response.data.existingUser;
     console.log(user)
     if (!user.userName|| !user.dob || !user.bloodType) {
-      // alert("Personal details are not filled!!");
-      //  window.location.href = "/CalendarExpand"
       return null;
     }
     const freshData = {

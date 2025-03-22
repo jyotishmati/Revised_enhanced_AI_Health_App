@@ -19,6 +19,7 @@ export const uploadDocumentAPI = async (
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
+          // "X-Coordinates": JSON.stringify(coordinates),
         },
       });
   

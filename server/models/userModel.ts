@@ -11,6 +11,8 @@ interface IUserSchema {
   dob?: Date;
   createdAt?: Date;
   idType?: string;
+  bloodShare:boolean;
+  currCoordinates: [number, number]
   idNumber?: number;
   nameCard?: string;
   namePhysician?: string;
@@ -29,6 +31,8 @@ const UserSchema: Schema<IUserSchema> = new Schema(
     emergencyContact: { type: Number },
     emergencyName: { type: String },
     gender: { type: String, enum: ["Male", "Female", "other"] },
+    bloodShare:{type:Boolean},
+    currCoordinates: { type: [Number], required: true },
     dob: { type: Date },
     age: { type: Number },
     createdAt: { type: Date, default: Date.now },
@@ -45,16 +49,6 @@ const UserSchema: Schema<IUserSchema> = new Schema(
       minlength: 8,
       select: false,
     },
-    // confirmPassword: {
-    //   type: String,
-    //   required: [true, "Please confirm your password"],
-    //   validate: {
-    //     validator: function (el) {
-    //       return el == this.password;
-    //     },
-    //     message: "Passwords are not the same!",
-    //   },
-    // },
   },
   { timestamps: true }
 );
@@ -65,7 +59,6 @@ UserSchema.pre("save", async function (next) {
       next();
     }
     this.password = await bcrypt.hash(this.password, 12);
-    // this.confirmPassword = undefined;
     next();
   } catch (err: any) {
     next(err);

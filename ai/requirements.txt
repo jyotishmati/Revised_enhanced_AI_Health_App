@@ -1,0 +1,7 @@
+transformers
+langchain
+huggingface_hub
+python-dotenv
+langchain_mistralai
+grpcio 
+grpcio-tools

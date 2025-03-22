@@ -41,3 +41,7 @@ process.on('SIGTERM', () => {
     console.log('💥 Process terminated!');
   });
 });
+
+
+    // "start": "npx nodemon",
+    // "dev": "nodemon",

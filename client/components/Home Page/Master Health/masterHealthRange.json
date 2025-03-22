@@ -22,6 +22,25 @@
     "Alkaline Phosphatase": [30.0, 120.0, "U/l"],
     "Protien": [6.6, 8.3, "g/dl"],
     "Albumin": [3.5, 5.2, "g/dl"],
-    "A/G Ration": [0.9, 2.0, ""]
+    "A/G Ration": [0.9, 2.0, ""],
+    "Fasting Blood Glucose": [70.0, 100.0, "mg/dl"],
+    "Postprandial Blood Glucose": [70.0, 140.0, "mg/dl"],
+    "HbA1c": [4.0, 5.7, "%"],
+    "Insulin": [2.0, 25.0, "µIU/ml"],
+    "C-Peptide": [0.5, 3.0, "ng/ml"],
+    
+    "TSH": [0.4, 4.0, "µIU/ml"],
+    "Free T4": [0.8, 2.0, "ng/dl"],
+    "Free T3": [2.0, 4.4, "pg/ml"],
+    "Total T4": [5.0, 12.0, "µg/dl"],
+    "Total T3": [0.8, 2.0, "ng/ml"],
+    "Anti-TPO Antibodies": [0.0, 35.0, "IU/ml"],
+    
+    "Total Cholesterol": [125.0, 200.0, "mg/dl"],
+    "HDL": [40.0, 60.0, "mg/dl"],
+    "LDL": [0.0, 100.0, "mg/dl"],
+    "Triglycerides": [0.0, 150.0, "mg/dl"],
+    "VLDL": [0.0, 30.0, "mg/dl"],
+    "Non-HDL Cholesterol": [0.0, 130.0, "mg/dl"]
   }
   

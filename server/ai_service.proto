@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package ai;
+
+service AIService {
+    rpc GetAIResponse (AIRequest) returns (AIResponse);
+}
+
+message AIRequest {
+    string question = 1;
+}
+
+message AIResponse {
+    string answer = 1;
+}
