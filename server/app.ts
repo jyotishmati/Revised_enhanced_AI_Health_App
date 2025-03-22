@@ -8,6 +8,7 @@ import masterHealthRouter from "./routes/masterHealthRouter";
 import chatBotRouter from "./routes/chatBotRouter";
 import blogRouter from "./routes/blogsRouter";
 import doctorRouter from "./routes/doctorRouter";
+import bloodBankRouter from "./routes/bloodBankRouter"
 import "./controllers/cronJob";
 
 dotenv.config();
@@ -24,6 +25,7 @@ app.use("/v1/notification", noticationRouter);
 app.use("/v1/master-health", masterHealthRouter);
 app.use("/v1/chatBot", chatBotRouter);
 app.use("/v1/blogs", blogRouter);
+app.use("/v1/blood-bank", bloodBankRouter)
 
 export default app;
 

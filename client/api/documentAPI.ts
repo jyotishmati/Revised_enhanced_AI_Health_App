@@ -14,7 +14,8 @@ export const uploadDocumentAPI = async (
       const formData = new FormData();
       formData.append("file", file);
       formData.append("date", date);
-  
+      
+      
       const response = await apiClient.post("docs/save-docs", formData, {
         headers: {
           Authorization: `Bearer ${token}`,

@@ -1,5 +1,5 @@
 import { IUserDetails } from "@/app/navigation/ProfileNavigator";
-import apiClient from "./apiClient";
+import apiClient, { setHeaders } from "./apiClient";
 import { getItem } from "./tokenOperation";
 
 interface UpdateUserResponse {
@@ -16,10 +16,7 @@ export const getMasterHealthAPI = async (): Promise<any[]>=> {
       throw new Error("No token found, please log in again.");
     }
     const response = await apiClient.get("master-health/get-master-health", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
+       headers: await setHeaders(),
     });
     if (!response?.data?.data[0]?.tests) {
       throw new Error("Server lost");

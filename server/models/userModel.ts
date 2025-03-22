@@ -1,6 +1,11 @@
 import mongoose, { Schema, Model } from "mongoose";
 import bcrypt from "bcryptjs";
 
+interface ICoordinates {
+  type: string;
+  coordinates: [number, number];
+}
+
 interface IUserSchema {
   email: string;
   emailVerified: boolean;
@@ -11,11 +16,12 @@ interface IUserSchema {
   dob?: Date;
   createdAt?: Date;
   idType?: string;
-  bloodShare:boolean;
-  currCoordinates: [number, number]
+  bloodShare: boolean;
+  currCoordinates: ICoordinates;
   idNumber?: number;
   nameCard?: string;
   namePhysician?: string;
+  phno?: number;
   pincode?: number;
   state?: string;
   bloodType?: string;
@@ -27,12 +33,16 @@ const UserSchema: Schema<IUserSchema> = new Schema(
   {
     email: { type: String, required: [true, "Email is required"] },
     emailVerified: { type: Boolean, default: false },
+    phno: { type: Number },
     userName: { type: String },
     emergencyContact: { type: Number },
     emergencyName: { type: String },
     gender: { type: String, enum: ["Male", "Female", "other"] },
-    bloodShare:{type:Boolean},
-    currCoordinates: { type: [Number], required: true },
+    bloodShare: { type: Boolean },
+    currCoordinates: {
+      type: { type: String, enum: ["Point"], required: true },
+      coordinates: { type: [Number], required: true, index: "2dsphere" },
+    },
     dob: { type: Date },
     age: { type: Number },
     createdAt: { type: Date, default: Date.now },
@@ -40,6 +50,7 @@ const UserSchema: Schema<IUserSchema> = new Schema(
     idNumber: { type: Number },
     nameCard: { type: String },
     namePhysician: { type: String },
+
     bloodType: { type: String },
     pincode: { type: Number },
     state: { type: String },

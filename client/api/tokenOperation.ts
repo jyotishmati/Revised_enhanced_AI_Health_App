@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import apiClient from "./apiClient";
+import apiClient, { setHeaders } from "./apiClient";
 
 export const setItem = async (value: string) => {
   try {
@@ -39,15 +39,8 @@ export const removeItem = async () => {
 
 export const tokenValidation = async () => {
   try {
-    const token = await getItem();
-    if(!token){
-      throw new Error("User Not Login")
-    }
     const response = await apiClient.get("/user/verify-token", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
+      headers: await setHeaders(),
     });
     
     if(!response){

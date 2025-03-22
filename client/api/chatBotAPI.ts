@@ -1,93 +1,77 @@
-import apiClient from "./apiClient";
+import apiClient, { setHeaders } from "./apiClient";
+import { currentLocation } from "./other";
 import { getItem } from "./tokenOperation";
 import useLocation from "./useLocation";
 
-
 interface INewChatAPI {
-    text: string;
-    sender?: "user" | "bot";
-    timestamp?: number;
-  }
-interface IBotChat{
-    text:string
-    timestamp:number
-    sender?:string
+  text: string;
+  sender?: "user" | "bot";
+  timestamp?: number;
 }
-  
-  export const newChatAPI= async (
-    chatDetails: INewChatAPI
-  ): Promise<IBotChat> => {
-      try {
-        const token = await getItem();
-        if (!token) {
-          throw new Error("No token found, please log in again.");
-        }
-      if (!chatDetails || !chatDetails.text) {
-        throw new Error("Chat not Provided");
-      }
-      // const location = useLocation();
-      // console.log(location)
+interface IBotChat {
+  text: string;
+  timestamp: number;
+  sender?: string;
+}
 
-      console.log("chat Details: ", {
-        message:chatDetails.text, ...chatDetails
-      })
-      const response = await apiClient.post("chatBot/create-chat", 
-        chatDetails
-      , {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      return response.data.data;
-    } catch (error: any) {
-      console.error(error);
-      if (error.response) {
-        if (error.response.status === 400) {
-          throw new Error(
-            error.response.data?.message || "Invalid or Expired OTP."
-          );
-        }
-        throw new Error(error.response.data?.message || "Verification failed.");
-      } else if (error.request) {
-        throw new Error("No response from server. Please try again later.");
-      } else {
-        throw new Error("An unexpected error occurred. Please try again.");
-      }
+export const newChatAPI = async (
+  chatDetails: INewChatAPI
+): Promise<IBotChat> => {
+  try {
+
+    if (!chatDetails || !chatDetails.text) {
+      throw new Error("Chat not Provided");
     }
-  };
-  
 
-
-
-  export const getAllChatAPI= async (
-  ): Promise<IBotChat[]> => {
-      try {
-        const token = await getItem();
-        if (!token) {
-          throw new Error("No token found, please log in again.");
-        }
-
-      const response = await apiClient.get("chatBot/get-chat", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      return response.data.data;
-    } catch (error: any) {
-      console.error(error);
-      if (error.response) {
-        if (error.response.status === 400) {
-          throw new Error(
-            error.response.data?.message || "Invalid or Expired OTP."
-          );
-        }
-        throw new Error(error.response.data?.message || "Verification failed.");
-      } else if (error.request) {
-        throw new Error("No response from server. Please try again later.");
-      } else {
-        throw new Error("An unexpected error occurred. Please try again.");
+    console.log("chat Details: ", {
+      message: chatDetails.text,
+      ...chatDetails,
+    });
+    const response = await apiClient.post("chatBot/create-chat", chatDetails, {
+      headers: await setHeaders(),
+    });
+    return response.data.data;
+  } catch (error: any) {
+    console.error(error);
+    if (error.response) {
+      if (error.response.status === 400) {
+        throw new Error(
+          error.response.data?.message || "Invalid or Expired OTP."
+        );
       }
+      throw new Error(error.response.data?.message || "Verification failed.");
+    } else if (error.request) {
+      throw new Error("No response from server. Please try again later.");
+    } else {
+      throw new Error("An unexpected error occurred. Please try again.");
     }
-  };
+  }
+};
+
+export const getAllChatAPI = async (): Promise<IBotChat[]> => {
+  try {
+    const token = await getItem();
+    if (!token) {
+      throw new Error("No token found, please log in again.");
+    }
+
+    const response = await apiClient.get("chatBot/get-chat", {
+      headers: await setHeaders(),
+    });
+    return response.data.data;
+  } catch (error: any) {
+    console.error(error);
+    if (error.response) {
+      if (error.response.status === 400) {
+        throw new Error(
+          error.response.data?.message || "Invalid or Expired OTP."
+        );
+      }
+      throw new Error(error.response.data?.message || "Verification failed.");
+    } else if (error.request) {
+      throw new Error("No response from server. Please try again later.");
+    } else {
+      throw new Error("An unexpected error occurred. Please try again.");
+    }
+  }
+};

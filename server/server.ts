@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import app from "./app";
+import UserModel from "./models/userModel";
 
 dotenv.config()
 
@@ -15,9 +16,19 @@ process.on('uncaughtException', err => {
 const DB =
   process.env?.DATABASE.replace("<password>", process.env?.DB_PASSWORD) ||
   "mongodb://localhost:27017";
-mongoose.connect(DB).then(()=>{
-  console.log("Database is Connected")
-});
+
+
+mongoose
+  .connect(DB)
+  .then(async () => {
+    console.log("Database is Connected");
+    await UserModel.collection.createIndex({ currCoordinates: "2dsphere" });
+    console.log("2dsphere index created successfully");
+  })
+  .catch((err) => {
+    console.error("Database connection error:", err);
+    process.exit(1);
+  });
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

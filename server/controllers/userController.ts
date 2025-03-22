@@ -1,102 +1,6 @@
 import { Request, Response } from "express";
 import UserModel from "../models/userModel";
-
-// export const updateUserDetails = async (req: Request, res: Response) => {
-//   try {
-//     const {
-//       userName,
-//       emergencyContact,
-//       emergencyName,
-//       gender,
-//       dob,
-//       age,
-//       idType,
-//       idNumber,
-//       nameCard,
-//       namePhysician,
-//       pincode,
-//       state,
-//     } = req.body;
-
-//     if (Object.keys(req.body).length === 0) {
-//       return res.status(400).json({ message: "Request body cannot be empty" });
-//     }
-
-//     if (
-//       !userName ||
-//       !emergencyContact ||
-//       !emergencyName ||
-//       !gender ||
-//       !dob ||
-//       !age ||
-//       !idType ||
-//       !idNumber ||
-//       !nameCard ||
-//       !namePhysician ||
-//       !pincode ||
-//       !state
-//     ) {
-//       return res.status(422).json({ message: "Incomplete Fields" });
-//     }
-
-//     const user = res.locals.user;
-//     const existingUser = await UserModel.findById(user._id);
-//     if (!existingUser) {
-//       return res.status(404).json({
-//         message: "User not found in database",
-//         isValid: false,
-//         verifyEmail: true,
-//         isCompleteUserDetails: false,
-//       });
-//     }
-//     if (!user.emailVerified) {
-//       res
-//         .status(200)
-//         .json({
-//           message: "Email not verified",
-//           isValid: false,
-//           verifyEmail: false,
-//           isCompleteUserDetails: false,
-//         });
-//     }
-//     const updatedUser = await UserModel.findByIdAndUpdate(
-//       user._id,
-//       {
-//         userName,
-//         emergencyContact,
-//         emergencyName,
-//         gender,
-//         dob,
-//         age,
-//         idType,
-//         idNumber,
-//         nameCard,
-//         namePhysician,
-//         pincode,
-//         state,
-//       },
-//       { new: true, runValidators: true }
-//     );
-
-//     if (!updatedUser) {
-//       return res.status(404).json({ message: "User not found",       isValid: false,
-//         verifyEmail: true,
-//         isCompleteUserDetails: false, });
-//     }
-
-//     res.status(200).json({
-//       message: "User details updated successfully",
-//       updatedUser,
-//       user,
-//       isValid: true,
-//       verifyEmail: true,
-//       isCompleteUserDetails: true,
-//     });
-//   } catch (err: any) {
-//     console.error("Error updating user details:", err);
-//     res.status(500).json({ message: "Internal Server Error" });
-//   }
-// };
+import { Types } from "mongoose";
 
 export const updateUserDetails = async (req: Request, res: Response) => {
   try {
@@ -188,5 +92,29 @@ export const getUserDetails = async (req: Request, res: Response) => {
   } catch (err: any) {
     console.error("Error updating user details:", err);
     res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const updateUserCoordinates = async ({
+  userId,
+  coordinates,
+}: {
+  userId: Types.ObjectId;
+  coordinates: [number, number];
+}): Promise<void> => {
+  try {
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      console.error("User not found");
+      return;
+    }
+    user.currCoordinates = {
+      type: "Point",
+      coordinates: coordinates, 
+    };
+    await user.save();
+    return;
+  } catch (err: any) {
+    console.error("Error updating user details:", err);
   }
 };

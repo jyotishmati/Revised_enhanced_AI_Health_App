@@ -1,4 +1,4 @@
-import apiClient from "./apiClient";
+import apiClient, { setHeaders } from "./apiClient";
 import { getItem, setItem } from "./tokenOperation";
 // import { storeToken } from "./tokenOperation";
 // import { getToken, saveToken } from "./tokenOperation2";
@@ -54,20 +54,12 @@ interface IOTP {
 }
 export const verifyEmail = async ({ otp }: IOTP) => {
   try {
-    const token = await getItem();
-    if (!token) {
-      throw new Error("No token found, please log in again.");
-    }
-    console.log(token);
 
     const response = await apiClient.post(
       "user/verify-email",
       { secret: otp },
       {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+         headers: await setHeaders(),
       }
     );
 

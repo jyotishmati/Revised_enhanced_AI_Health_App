@@ -1,5 +1,5 @@
 import { IUserDetails } from "@/app/navigation/ProfileNavigator";
-import apiClient from "./apiClient";
+import apiClient, { setHeaders } from "./apiClient";
 import { getItem } from "./tokenOperation";
 
 interface UpdateUserResponse {
@@ -21,10 +21,7 @@ export const updateUserAPI = async (
       throw new Error("User Details not Provided");
     }
     const response = await apiClient.post("user/update-user", userDetails, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
+       headers: await setHeaders(),
     });
     return response.data;
   } catch (error: any) {

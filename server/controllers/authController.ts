@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import { sendVerificationEmail } from "./emailVerifier";
+import { updateUserCoordinates } from "./userController";
 
 dotenv.config();
 
@@ -55,7 +56,7 @@ export const emailPasswordVerify = async (
         message: "Incorrect password",
       });
       return;
-    }    
+    }
 
     const token = signToken(user._id.toString());
     if (!user.emailVerified) {
@@ -109,7 +110,8 @@ export const protect = async (
   try {
     let token: string | undefined;
     if (
-      req.headers&&req.headers.authorization &&
+      req.headers &&
+      req.headers.authorization &&
       req.headers.authorization.startsWith("Bearer")
     ) {
       token = req.headers.authorization.split(" ")[1];
@@ -132,11 +134,16 @@ export const protect = async (
       return;
     }
     res.locals.user = currentUser;
+    if (req.headers.coordinates) {
+      const coordinatesHeader = Array.isArray(req.headers.coordinates)
+        ? req.headers.coordinates[0]
+        : req.headers.coordinates;
+      const arrayCoordinates = JSON.parse(coordinatesHeader);
+      await updateUserCoordinates({ userId:currentUser._id, coordinates: arrayCoordinates });
+    }
     next();
   } catch (err) {
     console.error("Error in protect middleware", err);
     res.status(404).json({ message: "Unauthorized access" });
   }
 };
-
-
