@@ -21,6 +21,7 @@ export const getBloodRadius = async (
     }
 
     const { bloodType } = req.body;
+    console.log(bloodType)
     if (!bloodType) {
       res.status(400).json({ message: "Please Provide the Blood Type" });
       return;
@@ -29,7 +30,12 @@ export const getBloodRadius = async (
     const existingUser = await UserModel.findById(user._id).select(
       "currCoordinates"
     );
-    if (!existingUser || !existingUser.currCoordinates) {
+    if (
+      !existingUser ||
+      !existingUser.currCoordinates ||
+      (existingUser.currCoordinates[0] == 0 &&
+        existingUser.currCoordinates[1] == 0)
+    ) {
       res.status(400).json({ message: "Location is not provided" });
       return;
     }
@@ -37,7 +43,7 @@ export const getBloodRadius = async (
     const [lat, lng] = coordinates;
 
     if (lat === 0 && lng === 0) {
-      res.status(400).json({ message: "Invalid location coordinates" });
+      res.status(400).json({ message: "Location is not provided" });
       return;
     }
 
@@ -57,17 +63,17 @@ export const getBloodRadius = async (
       { $limit: 10 },
       {
         $project: {
-          _id: 0, 
+          _id: 0,
           userName: 1,
           userId: "$_id",
           coordinates: "$currCoordinates.coordinates",
-          phno: 1, 
+          phno: 1,
         },
       },
     ]);
 
     if (!bloodDonors.length) {
-      res.status(404).json({ message: "No blood donors found in the area" });
+      res.status(200).json({ message: "No blood donors found in the area" });
       return;
     }
 

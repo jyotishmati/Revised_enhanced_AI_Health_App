@@ -31,8 +31,10 @@ export const currentLocation = async (): Promise<[number, number] | void> => {
   const { latitude: lat, longitude: lng } = location.coords;
   return [lat, lng];
 };
+
+
 export const getAddressFromCoordinates = async (latitude: number, longitude: number) => {
-  const url = `https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}&api_key=67df16ae7b9da696850246vuq28b965`;
+  const url = `https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}&api_key=${process.env.EXPO_PUBLIC_MAP_API}`;
 
   try {
     const response = await fetch(url);
