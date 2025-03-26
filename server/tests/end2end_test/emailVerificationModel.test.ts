@@ -1,8 +1,8 @@
 import request from "supertest";
 import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
-import app from "../app"; // Ensure this points to your Express app instance
-import EmailVerification from "../models/emailVerificationModel";
+import app from "./../../app"; 
+import EmailVerification from "../../models/emailVerificationModel";
 
 let mongoServer: MongoMemoryServer;
 

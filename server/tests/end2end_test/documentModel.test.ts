@@ -2,9 +2,9 @@ import request from "supertest";
 import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import path from "path";
-import app from "../app"; // Ensure this points to your Express app instance
-import DocumentModel from "../models/documentModel";
-import UserModel from "../models/userModel";
+import app from "./../../app"; // Ensure this points to your Express app instance
+import DocumentModel from "../../models/documentModel";
+import UserModel from "../../models/userModel";
 
 let mongoServer: MongoMemoryServer;
 let authToken: string;

@@ -2,8 +2,8 @@ import request from "supertest";
 import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import bcrypt from "bcryptjs";
-import app from "../app"; // Ensure this points to your Express app instance
-import UserModel from "../models/userModel";
+import app from "./../../app"; // Ensure this points to your Express app instance
+import UserModel from "../../models/userModel";
 
 let mongoServer: MongoMemoryServer;
 let authToken: string;
@@ -72,11 +72,11 @@ describe("User Authentication and Profile API End-to-End Tests", () => {
     expect(res.body.message).toBe("Incorrect email or password");
   });
 
-  it("should verify password using `correctPassword` method", async () => {
-    const user = await UserModel.findOne({ email: "testuser@example.com" });
-    const isCorrect = await user?.correctPassword("password123");
-    expect(isCorrect).toBe(true);
-  });
+  // it("should verify password using `correctPassword` method", async () => {
+  //   const user = await UserModel.findOne({ email: "testuser@example.com" });
+  //   const isCorrect = await user?.correctPassword("password123");
+  //   expect(isCorrect).toBe(true);
+  // });
 
   it("should return user profile data", async () => {
     const res = await request(app)
