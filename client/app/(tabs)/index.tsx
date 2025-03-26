@@ -15,13 +15,23 @@ import ProfileNavigator from "../navigation/ProfileNavigator";
 import { ActivityIndicator, View } from "react-native";
 import { tokenValidation } from "@/api/tokenOperation";
 import MasterHealthVault from "@/components/Home Page/Master Health/Vault_master_health";
-
 import ExpandBB from '@/components/Home Page/Blood Bank/expand_BB';
 import DocumentManagerScreen from '@/components/Home Page/Calendar/documents_upload';
 import Upload from '../../components/Home Page/Calendar/upload';
 import Hash from "@/components/Home Page/Hash"
-import Insurance from "@/components/Insurance"
-import FullProfile from '../../components/full_profile';
+import Insurance from "@/components/Insurance/Insurance"
+import FullProfile from '../../components/Full_Profile/full_profile';
+import MyHealth from '../../components/Full_Profile/my_health';
+import Subscription from '../../components/Full_Profile/subscription';
+import MentalHealth from '../../components/Full_Profile/Mental_health';
+import Settings from '../../components/Full_Profile/settings';
+import MedicalHistory from '../../components/Full_Profile/medical_history';
+import LifeStyle from '../../components/Full_Profile/life_style';
+import Fitness from '../../components/Full_Profile/fitness';
+import ConnectDevice from '../../components/Full_Profile/connect_device';
+import HealthCoin from '../../components/Full_Profile/health_coin';
+import HumanAnatomy from '../../components/Home Page/Human_Anatomy';
+import Notification from '../../components/Home Page/notification'
 
 const Stack = createNativeStackNavigator();
 
@@ -62,7 +72,7 @@ export default function MainNavigator() {
   }
 
   return (
-    <Stack.Navigator initialRouteName={initialRoute}>
+    <Stack.Navigator initialRouteName={initialRoute} screenOptions={{ headerShown: false }}>
       <Stack.Screen
         name="Welcome1"
         component={WelcomeScreen}
@@ -88,6 +98,17 @@ export default function MainNavigator() {
       <Stack.Screen name='Hash' component={Hash} />
       <Stack.Screen name='Insurance' component={Insurance} />
       <Stack.Screen name='FullProfile' component={FullProfile} />
+      <Stack.Screen name='MyHealth' component={MyHealth} />
+      <Stack.Screen name='Subscription' component={Subscription} />
+      <Stack.Screen name='MentalHealth' component={MentalHealth} />
+      <Stack.Screen name='Settings' component={Settings} />
+      <Stack.Screen name='MedicalHistory' component={MedicalHistory} />
+      <Stack.Screen name='LifeStyle' component={LifeStyle} />
+      <Stack.Screen name='Fitness' component={Fitness} />
+      <Stack.Screen name='ConnectDevice' component={ConnectDevice} />
+      <Stack.Screen name='HealthCoin' component={HealthCoin} />
+      <Stack.Screen name='HumanAnatomy' component={HumanAnatomy} />
+      <Stack.Screen name='Notification' component={Notification} />
     </Stack.Navigator>
   );
 }

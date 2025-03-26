@@ -1,16 +1,28 @@
 // import React from "react";
-// import { 
-//   ScrollView, 
-//   View, 
-//   Text, 
-//   Image, 
-//   TouchableOpacity, 
-//   StyleSheet 
+// import {
+//   ScrollView,
+//   View,
+//   Text,
+//   Image,
+//   TouchableOpacity,
+//   TextInput,
+//   FlatList,
+//   Dimensions,
+//   StyleSheet,
 // } from "react-native";
-// import { FontAwesome } from "@expo/vector-icons";
-// import Gold_bar from "./Home Page/Gold_bar";
+// import { FontAwesome, Ionicons } from "@expo/vector-icons";
+// import Gold_bar from "../Home Page/Gold_bar";
+// import { useNavigation } from "@react-navigation/native";
+//import SelfInsurance from "./self_insurance"; 
+
+// const { width } = Dimensions.get("window");
+// const scale = (size: number) => (width / 375) * size; // Base width is 375
 
 // const InsuranceScreen = () => {
+//   const navigation = useNavigation()
+// const [selectedTab, setSelectedTab] = useState<"self" | "family" | null>(
+//   null
+// );
 //   return (
 //     <ScrollView style={styles.container}>
 //       {/* Top Gold Bar */}
@@ -20,10 +32,10 @@
 //       <View style={styles.profileContainer}>
 //         {/* Profile Image */}
 //         <Image
-//           source={require('../assets/images/page1.jpg')}
+//           source={require("../../assets/images/page1.jpg")}
 //           style={styles.profileImage}
 //         />
-        
+
 //         {/* Vertical Divider */}
 //         <View style={styles.verticalDivider} />
 
@@ -37,13 +49,13 @@
 
 //       {/* Insurance Type Buttons */}
 //       <View style={styles.buttonContainer}>
-//         <TouchableOpacity style={styles.insuranceButton}>
-//           <FontAwesome name="user" size={24} color="#FFF" />
+//         <TouchableOpacity style={styles.insuranceButton} onPress={() => navigation.navigate('SelfInsurance' as never)}>
+//           <FontAwesome name="user" size={scale(24)} color="#FFF" />
 //           <Text style={styles.buttonText}>Self Insurance</Text>
 //         </TouchableOpacity>
 
 //         <TouchableOpacity style={styles.insuranceButton}>
-//           <FontAwesome name="users" size={24} color="#FFF" />
+//           <FontAwesome name="users" size={scale(24)} color="#FFF" />
 //           <Text style={styles.buttonText}>Family Insurance</Text>
 //         </TouchableOpacity>
 //       </View>
@@ -88,7 +100,7 @@
 //         <View style={styles.insuranceCard}>
 //           <View style={styles.insuranceHeader}>
 //             <Image
-//               source={require("../assets/images/page1.jpg")}
+//               source={require("../../assets/images/page1.jpg")}
 //               style={styles.insuranceLogo}
 //             />
 //             <Text style={styles.insuranceCompany}>TATA AIA Life Insurance</Text>
@@ -131,152 +143,148 @@
 //   profileContainer: {
 //     flexDirection: "row",
 //     alignItems: "center",
-//     paddingHorizontal: 20,
-//     paddingTop: 20,
+//     paddingHorizontal: scale(20),
+//     paddingTop: scale(20),
 //   },
 //   profileImage: {
-//     width: 125,
-//     height: 125,
-//     borderRadius: 10, // Slightly rounded corners
+//     width: scale(125),
+//     height: scale(125),
+//     borderRadius: scale(10),
 //   },
 //   verticalDivider: {
-//     width: 1,
+//     width: scale(1),
 //     height: "68%",
 //     backgroundColor: "black",
-//     marginHorizontal: 15,
+//     marginHorizontal: scale(15),
 //   },
 //   profileDetails: {
 //     flex: 1,
 //     justifyContent: "center",
 //   },
 //   userName: {
-//     fontSize: 18,
+//     fontSize: scale(18),
 //     fontWeight: "bold",
-//     marginBottom: 2,
+//     marginBottom: scale(2),
 //   },
 //   userInfo: {
-//     fontSize: 14,
+//     fontSize: scale(14),
 //     color: "gray",
-//     marginTop: 2,
+//     marginTop: scale(2),
 //   },
 
 //   /* INSURANCE TYPE BUTTONS */
 //   buttonContainer: {
 //     flexDirection: "row",
 //     justifyContent: "space-around",
-//     paddingHorizontal: 16,
-//     marginTop: 20,
-//     // No bottom margin here since we'll place the divider after these
+//     paddingHorizontal: scale(16),
+//     marginTop: scale(20),
 //   },
 //   insuranceButton: {
-//     // Stack icon above text
 //     flexDirection: "column",
 //     alignItems: "center",
 //     justifyContent: "center",
 //     backgroundColor: "#003366",
-//     paddingVertical: 12,
-//     paddingHorizontal: 20,
-//     borderRadius: 8,
+//     paddingVertical: scale(12),
+//     paddingHorizontal: scale(20),
+//     borderRadius: scale(8),
 //     flex: 1,
-//     marginHorizontal: 5,
+//     marginHorizontal: scale(5),
 //   },
 //   buttonText: {
 //     color: "#FFF",
-//     fontSize: 16,
+//     fontSize: scale(16),
 //     fontWeight: "bold",
-//     marginTop: 5,
+//     marginTop: scale(5),
 //     textAlign: "center",
 //   },
 
 //   /* HORIZONTAL DIVIDER AFTER BUTTONS */
 //   horizontalLineFull: {
-//     height: 1,
+//     height: scale(1),
 //     backgroundColor: "black",
-//     marginVertical: 20,
-//     marginHorizontal: 20,
+//     marginVertical: scale(20),
+//     marginHorizontal: scale(20),
 //   },
 
 //   /* INSURANCE CARDS */
 //   planContainer: {
-//     paddingHorizontal: 20,
-//     marginBottom: 20,
+//     paddingHorizontal: scale(20),
+//     marginBottom: scale(20),
 //   },
 //   insuranceCard: {
 //     backgroundColor: "#FFF",
-//     borderRadius: 10,
-//     padding: 15,
-//     marginBottom: 15,
-//     // Shadow for iOS
+//     borderRadius: scale(10),
+//     padding: scale(15),
+//     marginBottom: scale(15),
 //     shadowColor: "#000",
 //     shadowOpacity: 0.1,
-//     shadowRadius: 4,
-//     shadowOffset: { width: 0, height: 2 },
-//     // Shadow for Android
-//     elevation: 2,
+//     shadowRadius: scale(4),
+//     shadowOffset: { width: 0, height: scale(2) },
+//     elevation: scale(2),
 //   },
 //   insuranceHeader: {
 //     flexDirection: "row",
 //     alignItems: "center",
-//     marginBottom: 10,
+//     marginBottom: scale(10),
 //   },
 //   insuranceLogo: {
-//     width: 50,
-//     height: 50,
-//     marginRight: 10,
-//     borderRadius: 5,
+//     width: scale(50),
+//     height: scale(50),
+//     marginRight: scale(10),
+//     borderRadius: scale(5),
 //   },
 //   insuranceCompany: {
-//     fontSize: 16,
+//     fontSize: scale(16),
 //     fontWeight: "bold",
 //     flex: 1,
 //   },
 //   planPrice: {
-//     fontSize: 20,
+//     fontSize: scale(20),
 //     fontWeight: "bold",
-//     marginTop: 5,
+//     marginTop: scale(5),
 //   },
 //   discountText: {
-//     fontSize: 16,
+//     fontSize: scale(16),
 //     color: "green",
 //     fontWeight: "bold",
 //   },
 //   strikePrice: {
-//     fontSize: 16,
+//     fontSize: scale(16),
 //     color: "gray",
 //     textDecorationLine: "line-through",
-//     marginTop: 2,
+//     marginTop: scale(2),
 //   },
 //   horizontalLine: {
-//     height: 1,
+//     height: scale(1),
 //     backgroundColor: "#DDD",
-//     marginVertical: 10,
+//     marginVertical: scale(10),
 //   },
 //   planBenefitsTitle: {
-//     fontSize: 16,
+//     fontSize: scale(16),
 //     fontWeight: "bold",
-//     marginBottom: 5,
+//     marginBottom: scale(5),
 //   },
 //   planBenefits: {
-//     fontSize: 14,
+//     fontSize: scale(14),
 //     color: "gray",
-//     marginBottom: 15,
-//     lineHeight: 20,
+//     marginBottom: scale(15),
+//     lineHeight: scale(20),
 //   },
 //   buyButton: {
 //     backgroundColor: "#003366",
-//     paddingVertical: 12,
-//     borderRadius: 8,
+//     paddingVertical: scale(12),
+//     borderRadius: scale(8),
 //     alignItems: "center",
 //   },
 //   buyButtonText: {
 //     color: "#FFF",
-//     fontSize: 16,
+//     fontSize: scale(16),
 //     fontWeight: "bold",
 //   },
 // });
 
 
-import React from "react";
+import React, { useState } from "react";
 import {
   ScrollView,
   View,
@@ -289,12 +297,18 @@ import {
   StyleSheet,
 } from "react-native";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
-import Gold_bar from "./Home Page/Gold_bar";
+import Gold_bar from "../Home Page/Gold_bar";
+import { useNavigation } from "@react-navigation/native";
+import SelfInsurance from "./self_insurance"; 
 
 const { width } = Dimensions.get("window");
 const scale = (size: number) => (width / 375) * size; // Base width is 375
 
 const InsuranceScreen = () => {
+  const navigation = useNavigation()
+const [selectedTab, setSelectedTab] = useState<"self" | "family" | null>(
+  null
+);
   return (
     <ScrollView style={styles.container}>
       {/* Top Gold Bar */}
@@ -304,7 +318,7 @@ const InsuranceScreen = () => {
       <View style={styles.profileContainer}>
         {/* Profile Image */}
         <Image
-          source={require("../assets/images/page1.jpg")}
+          source={require("../../assets/images/page1.jpg")}
           style={styles.profileImage}
         />
 
@@ -321,16 +335,35 @@ const InsuranceScreen = () => {
 
       {/* Insurance Type Buttons */}
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.insuranceButton}>
+        <TouchableOpacity
+          style={[
+            styles.insuranceButton,
+            selectedTab === "self" && styles.activeButton,
+          ]}
+          onPress={() => setSelectedTab("self")}
+        >
           <FontAwesome name="user" size={scale(24)} color="#FFF" />
           <Text style={styles.buttonText}>Self Insurance</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.insuranceButton}>
+        <TouchableOpacity
+          style={[
+            styles.insuranceButton,
+            selectedTab === "family" && styles.activeButton,
+          ]}
+          onPress={() => setSelectedTab("family")}
+        >
           <FontAwesome name="users" size={scale(24)} color="#FFF" />
           <Text style={styles.buttonText}>Family Insurance</Text>
         </TouchableOpacity>
       </View>
+            {/* Render Selected Insurance Component */}
+            <view>
+            {selectedTab === "self" && <SelfInsurance />}
+            {selectedTab === "family" && <Text style={styles.infoText}>Family Insurance coming soon...</Text>}
+            </view>
+            
+
 
       {/* Horizontal Divider AFTER the buttons */}
       <View style={styles.horizontalLineFull} />
@@ -372,7 +405,7 @@ const InsuranceScreen = () => {
         <View style={styles.insuranceCard}>
           <View style={styles.insuranceHeader}>
             <Image
-              source={require("../assets/images/page1.jpg")}
+              source={require("../../assets/images/page1.jpg")}
               style={styles.insuranceLogo}
             />
             <Text style={styles.insuranceCompany}>TATA AIA Life Insurance</Text>
@@ -432,6 +465,15 @@ const styles = StyleSheet.create({
   profileDetails: {
     flex: 1,
     justifyContent: "center",
+  },
+  activeButton: {
+    backgroundColor: "#0055AA", // Active button color
+  },
+  infoText: {
+    fontSize: scale(16),
+    textAlign: "center",
+    marginTop: scale(20),
+    color: "gray",
   },
   userName: {
     fontSize: scale(18),

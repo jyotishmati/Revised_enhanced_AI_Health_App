@@ -8,11 +8,10 @@ import {
 } from "react-native";
 import { FontAwesome5, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-
 const { width } = Dimensions.get("window");
 const scale = (size: number) => (width / 375) * size;
 
-export default function VerificationScreen() {
+export default function Footer() {
   const navigation = useNavigation();
   return (
     <View style={styles.wrapper}>
@@ -20,33 +19,34 @@ export default function VerificationScreen() {
         {/* Row of Icon Buttons */}
         <View style={styles.iconRow}>
           <TouchableOpacity style={styles.button}>
-            <Ionicons name="home-outline" size={scale(20)} color="#6B7280" />
+            <Ionicons name="home" size={scale(22)} color="#0E3A5F" /> 
             <Text style={styles.text}>Home</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.button}>
-            <MaterialIcons name="local-hospital" size={scale(20)} color="#6B7280" />
+            <MaterialIcons name="local-hospital" size={scale(22)} color="#0E3A5F" />
             <Text style={styles.text}>Doctors</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => navigation.navigate("Insurance" as never)}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Insurance' as never)}>
             <View style={styles.centerButton}>
-              <FontAwesome5 name="star" size={scale(22)} color="#6B7280" />
+              <FontAwesome5 name="star" size={scale(24)} color="#0E3A5F" solid />
             </View>
+            <Text style={styles.text}></Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.button}>
-            <MaterialIcons name="analytics" size={scale(20)} color="#6B7280" />
+            <MaterialIcons name="analytics" size={scale(22)} color="#0E3A5F" />
             <Text style={styles.text}>Analytics</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("FullProfile" as never)}>
-            <FontAwesome5 name="user-circle" size={scale(20)} color="#0E3A5F" />
-            <Text style={[styles.text, styles.activeText]}>Profile</Text>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('FullProfile' as never)}>
+            <FontAwesome5 name="user-circle" size={scale(22)} color="#0E3A5F" solid />
+            <Text style={styles.text}>Profile</Text>
           </TouchableOpacity>
         </View>
 
-        {/* Bottom Indicator Bar (now inside the same container) */}
+        {/* Bottom Indicator Bar */}
         <View style={styles.indicatorContainer}>
           <View style={styles.indicator} />
         </View>
@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   container: {
-    // Use vertical layout so the icon row is on top, indicator is on bottom
     flexDirection: "column",
     backgroundColor: "#fff",
     borderTopLeftRadius: scale(20),
@@ -74,7 +73,6 @@ const styles = StyleSheet.create({
     paddingVertical: scale(10),
     paddingHorizontal: scale(15),
   },
-  // Row for the 5 icon buttons
   iconRow: {
     flexDirection: "row",
     justifyContent: "space-evenly",
@@ -91,7 +89,7 @@ const styles = StyleSheet.create({
     borderRadius: scale(25),
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: scale(10), // slightly lifted
+    marginBottom: scale(10),
   },
   text: {
     fontSize: scale(12),
@@ -106,7 +104,7 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     paddingBottom: scale(5),
-    marginTop: scale(2), // small gap above indicator
+    marginTop: scale(2),
   },
   indicator: {
     width: scale(150),
