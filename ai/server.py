@@ -1,6 +1,6 @@
 import grpc
 from concurrent import futures
-from chat.chatModel import ModelResponse
+from chat.chatModel222 import ModelResponse
 import time
 
 import ai_service_pb2
