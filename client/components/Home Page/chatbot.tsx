@@ -9,11 +9,12 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
-import { Feather } from "@expo/vector-icons";
+import { Feather, FontAwesome } from "@expo/vector-icons";
 import { FlatList } from "react-native-gesture-handler";
 import axios from "axios";
 import { formatTimestamp } from "@/api/other";
 import { getAllChatAPI, newChatAPI } from "@/api/chatBotAPI";
+import { useNavigation } from "@react-navigation/native";
 type Message = {
   text: string;
   sender: "user" | "chatbot";
@@ -21,6 +22,7 @@ type Message = {
 };
 
 const ChatScreen = () => {
+  const navigation = useNavigation();
   const [messages, setMessages] = useState<Message[]>([
     {
       text: "Hello! How are you?",
@@ -45,7 +47,6 @@ const ChatScreen = () => {
     ]);
     try {
       const aiData = await newChatAPI({ text: input });
-      console.log("AI Data ", aiData);
 
       const botReply = aiData.text;
       const chatTimestamp = Date.now();
@@ -72,7 +73,6 @@ const ChatScreen = () => {
   useEffect(() => {
     const fetchOldData = async () => {
       const oldChatDetails = await getAllChatAPI();
-      console.log("Old Chat Details", oldChatDetails);
   
       const formattedChats: Message[] = oldChatDetails.map((chat) => ({
         text: chat.text,
@@ -127,7 +127,13 @@ const ChatScreen = () => {
     behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
+      <View style={styles.header}>
+        <FontAwesome name="arrow-left" size={20} color="black" onPress={() => navigation.goBack()}/>
       <Text style={styles.title}>Med AI Bot</Text>
+        {/* <Text style={styles.headerTitle}>Master Health Vault</Text> */}
+        <View style={styles.iconGroup}>
+        </View>
+      </View>
       <Text style={styles.subtitle}>Your medical AI companion</Text>
       <View style={styles.underline} />
 
@@ -182,13 +188,28 @@ const styles = StyleSheet.create({
     padding: 40,
     paddingBottom:70
   },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 16,
+    backgroundColor: "white",
+    justifyContent: "space-between",
+  },
   title: {
     fontSize: 22,
     fontWeight: "bold",
     color: "#111",
   },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  iconGroup: {
+    flexDirection: "row",
+  },
   subtitle: {
     fontSize: 14,
+    textAlign: "center",
     color: "#555",
     marginBottom: 5,
   },

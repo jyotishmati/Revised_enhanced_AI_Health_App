@@ -11,6 +11,8 @@ import {
 } from "react-native";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import BloodDonorList from "./BloodDonorList";
+// import { useNavigation } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
 
 const { width } = Dimensions.get("window");
 const scale = (size: number) => (width / 375) * size; // Base width is 375
@@ -36,6 +38,7 @@ const bloodBanks = [
 
 const BloodBankScreen = () => {
   const [selectBloodGroup, setSelectBloodGroup] = useState<string>("");
+  const navigation = useNavigation();
 
   const handleBloodGroup = (grp: string) => {
     setSelectBloodGroup((prev) =>
@@ -101,6 +104,7 @@ const BloodBankScreen = () => {
           size={scale(24)}
           color="#0C3C5F"
           style={{ marginRight: scale(10) }}
+          onPress={() => navigation.goBack()}
         />
         <Text
           style={{ color: "#0C3C5F", fontSize: scale(18), fontWeight: "bold" }}

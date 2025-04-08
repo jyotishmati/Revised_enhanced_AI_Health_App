@@ -24,17 +24,29 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10\x61i_service.proto\x12\x02\x61i\"\x1d\n\tAIRequest\x12\x10\n\x08question\x18\x01 \x01(\t\"\x1c\n\nAIResponse\x12\x0e\n\x06\x61nswer\x18\x01 \x01(\t2;\n\tAIService\x12.\n\rGetAIResponse\x12\r.ai.AIRequest\x1a\x0e.ai.AIResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10\x61i_service.proto\x12\x02\x61i\"\x1d\n\tAIRequest\x12\x10\n\x08question\x18\x01 \x01(\t\"\x1c\n\nAIResponse\x12\x0e\n\x06\x61nswer\x18\x01 \x01(\t\")\n\x0b\x46ileRequest\x12\x0c\n\x04\x66ile\x18\x01 \x01(\x0c\x12\x0c\n\x04type\x18\x02 \x01(\t\"H\n\x0c\x46ileResponse\x12\x0e\n\x06status\x18\x01 \x01(\t\x12\x0f\n\x07message\x18\x02 \x01(\t\x12\x17\n\x05tests\x18\x03 \x03(\x0b\x32\x08.ai.Test\"{\n\x04Test\x12\x12\n\ncategories\x18\x01 \x01(\t\x12,\n\nparameters\x18\x02 \x03(\x0b\x32\x18.ai.Test.ParametersEntry\x1a\x31\n\x0fParametersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x02:\x02\x38\x01\x32;\n\tAIService\x12.\n\rGetAIResponse\x12\r.ai.AIRequest\x1a\x0e.ai.AIResponse2K\n\x15\x46ileProcessingService\x12\x32\n\x0bProcessFile\x12\x0f.ai.FileRequest\x1a\x10.ai.FileResponse\"\x00\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'ai_service_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
+  _globals['_TEST_PARAMETERSENTRY']._loaded_options = None
+  _globals['_TEST_PARAMETERSENTRY']._serialized_options = b'8\001'
   _globals['_AIREQUEST']._serialized_start=24
   _globals['_AIREQUEST']._serialized_end=53
   _globals['_AIRESPONSE']._serialized_start=55
   _globals['_AIRESPONSE']._serialized_end=83
-  _globals['_AISERVICE']._serialized_start=85
-  _globals['_AISERVICE']._serialized_end=144
+  _globals['_FILEREQUEST']._serialized_start=85
+  _globals['_FILEREQUEST']._serialized_end=126
+  _globals['_FILERESPONSE']._serialized_start=128
+  _globals['_FILERESPONSE']._serialized_end=200
+  _globals['_TEST']._serialized_start=202
+  _globals['_TEST']._serialized_end=325
+  _globals['_TEST_PARAMETERSENTRY']._serialized_start=276
+  _globals['_TEST_PARAMETERSENTRY']._serialized_end=325
+  _globals['_AISERVICE']._serialized_start=327
+  _globals['_AISERVICE']._serialized_end=386
+  _globals['_FILEPROCESSINGSERVICE']._serialized_start=388
+  _globals['_FILEPROCESSINGSERVICE']._serialized_end=463
 # @@protoc_insertion_point(module_scope)

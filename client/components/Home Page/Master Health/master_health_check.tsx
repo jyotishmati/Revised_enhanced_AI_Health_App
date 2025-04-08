@@ -81,15 +81,17 @@ const MasterHealthVault = () => {
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    backgroundColor: "#023047", // Match background with card
+    backgroundColor: "#023047", 
+    // borderRadius: 60,
   },
   card: {
     flexDirection: "row",
-    alignItems: "center", // Center items vertically
+    alignItems: "center", 
     justifyContent: "space-between",
-    backgroundColor: "#023047",
+    // backgroundColor: "#023047",
     paddingHorizontal: scale(16),
-    minHeight: scale(80), // Reduced height
+    minHeight: scale(50), 
+    // borderRadius: 20,
     width: "100%",
   },
   text: {

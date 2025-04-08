@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package health;
+
+service FileProcessingService {
+  rpc ProcessFile (FileRequest) returns (FileResponse) {}
+}
+
+message FileRequest {
+  bytes file = 1;
+  string type = 2;
+}
+
+message FileResponse {
+  string status = 1;
+  string message = 2;
+  repeated Test tests = 3;
+}
+
+message Test {
+  string categories = 1;
+  map<string, float> parameters = 2;
+}

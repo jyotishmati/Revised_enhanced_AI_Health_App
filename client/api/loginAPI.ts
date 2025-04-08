@@ -38,7 +38,6 @@ export const loginSignup = async ({
       }
     );
     if (response.status) {
-      console.log(response.data.token);
       await setItem(response.data.token);
       return response.data;
     }

@@ -16,9 +16,7 @@ llm = HuggingFaceHub(
 template = PromptTemplate.from_template("Question: {question}\nAnswer:")
 chain = LLMChain(llm=llm, prompt=template)
 
-# response = chain.run("What is Langchain?")
-# answer = response.replace("Question:", "").replace("Answer:", "").replace("What is Langchain?", "").strip()
-# print(answer)
+
 
 def ModelResponse(text):
     answer = chain.run(text)

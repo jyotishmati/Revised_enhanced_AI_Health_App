@@ -133,7 +133,7 @@
 // export default HealthCard;
 
 
-import { loadUserData } from "@/api/IndexDB";
+// import { loadUserData } from "@/api/IndexDB";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
@@ -153,39 +153,39 @@ const HealthCard = () => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(true);
   
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const userDetails = await loadUserData(); 
-        if(!userDetails){
-          navigation.navigate("Profile" as never);
-        }
-        console.log("User details:", userDetails);
-        setUserData(userDetails);
-      } catch (error) {
-        console.error("Failed to load user data:", error);
-      } finally {
-        setLoading(false); 
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const userDetails = await loadUserData(); 
+  //       if(!userDetails){
+  //         navigation.navigate("Profile" as never);
+  //       }
+  //       console.log("User details:", userDetails);
+  //       setUserData(userDetails);
+  //     } catch (error) {
+  //       console.error("Failed to load user data:", error);
+  //     } finally {
+  //       setLoading(false); 
+  //     }
+  //   };
 
-    fetchData();
-  }, [navigation]);
+  //   fetchData();
+  // }, [navigation]);
 
-  if (loading) {
-    return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <View>
+  //       <Text>Loading...</Text>
+  //     </View>
+  //   );
+  // }
   
   return (
     <View style={styles.container}>
       {/* Left Section */}
       <View style={styles.leftSection}>
         <View style={styles.greetingContainer}>
-          <Text style={styles.greetingText}> Hello {userData?.name || "Guest"}!</Text>
+          <Text style={styles.greetingText}> Hello {userData?.name || "Amaresh"}!</Text>
           <Text style={styles.waveEmoji}>👋</Text>
         </View>
 
@@ -193,10 +193,10 @@ const HealthCard = () => {
 
         <Text style={styles.sectionTitle}>Health Score</Text>
         <Text style={styles.infoText}>
-          Blood Type: <Text style={styles.boldText}>{userData?.bloodType || "N/A"}</Text>
+          Blood Type: <Text style={styles.boldText}>{userData?.bloodType || "A+"}</Text>
         </Text>
         <Text style={styles.infoText}>
-          Age: <Text style={styles.boldText}>{userData?.age || "N/A"}</Text>
+          Age: <Text style={styles.boldText}>{userData?.age || "24"}</Text>
         </Text>
       </View>
 
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: "#F3F4F6",
-    paddingVertical: scale(10),
+    // paddingVertical: scale(10),
     paddingHorizontal: scale(15),
     // borderRadius: 12,
     shadowColor: "#000",
@@ -247,9 +247,11 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: scale(2) },
     shadowRadius: scale(4),
     elevation: 3,
+    paddingBottom: 12,
   },
   leftSection: {
-    flex: 1,
+    // flex: 1,
+    marginTop:8
   },
   greetingText: {
     fontSize: scale(22),
@@ -258,22 +260,25 @@ const styles = StyleSheet.create({
   },
   greetingContainer: {
     flexDirection: "row",
-    alignItems: "center",
+    marginLeft: -6
+    // alignItems: "center",
   },
   waveEmoji: {
     fontSize: scale(18),
     marginLeft: scale(5),
   },
   subtitle: {
-    fontSize: scale(14),
+    fontSize: scale(12),
+  // marginLeft: 6,
+    // textAlign: "center",
     color: "#7D8A95",
     marginTop: scale(2),
   },
   sectionTitle: {
-    fontSize: scale(18),
-    fontWeight: "bold",
+    fontSize: scale(14),
+    fontWeight: "normal",
     color: "#063247",
-    marginTop: scale(6),
+    marginTop: scale(14),
   },
   boldText: {
     fontWeight: "bold",

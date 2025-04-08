@@ -6,12 +6,20 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
+  Alert,
 } from "react-native";
 import { FontAwesome, Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { getMasterHealthAPI } from "@/api/masterHealthAPI";
+import { Linking } from "react-native";
+import { getMasterHealthAPI, uploadMasterHealth } from "@/api/masterHealthAPI";
 import masterHealthRange from "@/components/Home Page/Master Health/masterHealthRange.json";
 import masterHealthTextButton from "@/components/Home Page/Master Health/masterHeathTextButton.json";
+import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
+import * as DocumentPicker from "expo-document-picker";
+import { useNavigation } from "@react-navigation/native";
+import { Platform } from "react-native";
+import BloodTestTable from "./check_results";
 
 function parseRange(rangeStr: string) {
   try {
@@ -154,7 +162,6 @@ const HealthPanel: React.FC<HealthPanelProps> = ({
   if (Object.keys(parameters).length === 0) {
     return;
   }
-  console.log(parameters);
   const tests: TestData[] = Object.entries(parameters).map(([key, value]) => ({
     name: key,
     value: value as number,
@@ -295,7 +302,8 @@ const HealthPanel: React.FC<HealthPanelProps> = ({
 // 7) MAIN SCREEN
 const MasterHealthVault: React.FC = () => {
   const [data, setData] = useState<any[]>([]);
-
+  const [verifyResult, setVeifyResult] = useState<boolean>();
+  const navigation = useNavigation();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -308,29 +316,173 @@ const MasterHealthVault: React.FC = () => {
 
     fetchData();
   }, []);
+
+  const handleUpload = async (
+    file: {
+      uri: string;
+      name: string;
+      type: string | null | undefined;
+      size: number | null | undefined;
+      buffer?: Uint8Array;
+      blob: Blob;
+    },
+    fileType: "image" | "pdf"
+  ) => {
+    try {
+      console.log("working in handle upload");
+
+      const [success, acceptValue] = await uploadMasterHealth(file, fileType);
+      if (success) {
+        Alert.alert("Success", "File uploaded successfully!");
+        setVeifyResult(true);
+      } else {
+        Alert.alert("Error", "File upload failed.");
+      }
+    } catch (error) {
+      Alert.alert("Error", "Something went wrong.");
+    }
+  };
+
+  const pickFile = async () => {
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: ["application/pdf", "image/*"],
+        copyToCacheDirectory: Platform.OS !== "web",
+      });
+
+      if (result.canceled) return;
+      const file = result.assets[0];
+      if (!file) return;
+
+      let fileBuffer: Uint8Array | undefined = undefined;
+      let fileBlob: Blob;
+
+      if (Platform.OS === "web") {
+        const response = await fetch(file.uri);
+        fileBlob = await response.blob();
+      } else {
+        // For React Native
+        const fileContent = await FileSystem.readAsStringAsync(file.uri, {
+          encoding: FileSystem.EncodingType.Base64,
+        });
+        fileBuffer = new Uint8Array(Buffer.from(fileContent, "base64"));
+        fileBlob = new Blob([fileBuffer], {
+          type: file.mimeType || "application/octet-stream",
+        });
+      }
+
+      handleUpload(
+        {
+          uri: file.uri,
+          name: file.name,
+          type: file.mimeType,
+          size: file.size,
+          buffer: fileBuffer,
+          blob: fileBlob,
+        },
+        file.mimeType?.startsWith("image") ? "image" : "pdf"
+      );
+    } catch (error) {
+      console.error("Error picking file:", error);
+      Alert.alert("Error", "Failed to pick the file");
+    }
+  };
+
+  const openCamera = async () => {
+    try {
+      // 1. Request camera permissions
+      const { status } = await ImagePicker.requestCameraPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert(
+          "Permission Required",
+          "Please enable camera access in settings to continue.",
+          [
+            { text: "OK" },
+            {
+              text: "Open Settings",
+              onPress: () => Linking.openSettings(),
+            },
+          ]
+        );
+        return;
+      }
+
+      // 2. Launch camera
+      const result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3], // Standard aspect ratio
+        quality: 0.8, // Balanced quality (0-1)
+        base64: false, // We'll handle file reading separately
+      });
+
+      if (result.canceled || !result.assets?.[0]) return;
+      const image = result.assets[0];
+      const fileInfo = await FileSystem.getInfoAsync(image.uri);
+
+      if (!fileInfo.exists) {
+        throw new Error("File does not exist");
+      }
+
+      // Read file content (for gRPC)
+      const fileContent = await FileSystem.readAsStringAsync(image.uri, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+
+      const fileBuffer = Buffer.from(fileContent, "base64");
+      const blob = new Blob([fileBuffer], { type: "image/jpeg" });
+
+      // Prepare file data
+      const fileData = {
+        uri: image.uri,
+        name: `photo_${Date.now()}.jpg`, // Generate filename
+        type: "image/jpeg", // Default type
+        size: fileInfo.size || 0,
+        buffer: fileBuffer,
+        blob: blob,
+      };
+
+      // 4. Handle upload
+      handleUpload(fileData, "image");
+    } catch (error) {
+      console.error("Camera Error:", error);
+      Alert.alert("Error", "Failed to capture image. Please try again.", [
+        { text: "OK" },
+      ]);
+    }
+  };
+
   return (
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <FontAwesome name="arrow-left" size={20} color="black" />
+        <FontAwesome name="arrow-left" size={20} color="black" onPress={() => navigation.goBack()}/>
         <Text style={styles.headerTitle}>Master Health Vault</Text>
         <View style={styles.iconGroup}>
-          <FontAwesome
-            name="camera"
-            size={20}
-            color="black"
-            style={styles.icon}
-          />
-          <Feather name="upload" size={20} color="black" />
+          <TouchableOpacity onPress={openCamera}>
+            <FontAwesome
+              name="camera"
+              size={20}
+              color="black"
+              style={styles.icon}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={pickFile}>
+            <Feather name="upload" size={20} color="black" />
+          </TouchableOpacity>
         </View>
       </View>
 
       {/* Panels */}
-      <ScrollView>
-        {data.map((panel, index) => (
-          <HealthPanel key={index} {...panel} />
-        ))}
-      </ScrollView>
+      {verifyResult ? (
+        <BloodTestTable />
+      ) : (
+        <ScrollView>
+          {data.map((panel, index) => (
+            <HealthPanel key={index} {...panel} />
+          ))}
+        </ScrollView>
+      )}
     </View>
   );
 };

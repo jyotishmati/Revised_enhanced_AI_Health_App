@@ -1,5 +1,10 @@
 {
   "expo": {
+    "updates": {
+      "enabled": true,
+      "checkAutomatically": "ON_LOAD",
+      "fallbackToCacheTimeout": 30000
+    },
     "permissions": [
       "CAMERA",
       "READ_EXTERNAL_STORAGE",
@@ -20,6 +25,11 @@
       "newArchEnabled": true
     },
     "android": {
+      "usesCleartextTraffic": true,
+      "permissions": [
+        "INTERNET",
+        "ACCESS_NETWORK_STATE"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -47,6 +57,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "967bafb6-3b38-4bbe-bd5a-7d4c78dffe46"
+      }
     }
   }
 }

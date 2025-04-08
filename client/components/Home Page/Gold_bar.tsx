@@ -14,7 +14,7 @@
 //             <Text style={styles.goldText}>GOLD</Text>
 //           </TouchableOpacity>
 //         </LinearGradient>
-  
+
 //         {/* Icons Section */}
 //         <View style={styles.iconContainer}>
 //           <TouchableOpacity style={styles.iconWrapper} onPress={() => navigation.navigate('Chatbot' as never)}>
@@ -30,7 +30,7 @@
 //       </View>
 //     );
 //   }
-  
+
 //   // Icons (Fixed Size & Alignment)
 //   const chatIcon = () => (
 //     <Svg width="22" height="22" viewBox="0 0 24 24" fill="none">
@@ -43,7 +43,7 @@
 //       />
 //     </Svg>
 //   );
-  
+
 //   const hashtagIcon = () => (
 //     <Svg width="22" height="22" viewBox="0 0 24 24" fill="none">
 //       <Path d="M7 3L5 21" stroke="#0E2A3A" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
@@ -52,7 +52,7 @@
 //       <Path d="M5 15H19" stroke="#0E2A3A" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
 //     </Svg>
 //   );
-  
+
 //   const notificationIcon = () => (
 //     <Svg width="22" height="22" viewBox="0 0 24 24" fill="none">
 //       <Path
@@ -65,7 +65,7 @@
 //       <Path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="#0E2A3A" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
 //     </Svg>
 //   );
-  
+
 //   const styles = StyleSheet.create({
 //     container: {
 //       flexDirection: "row",
@@ -111,10 +111,17 @@
 //       justifyContent: "center",
 //     },
 //   });
-  
 
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+} from "react-native";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import Fontisto from "react-native-vector-icons/Fontisto"
 import { LinearGradient } from "expo-linear-gradient";
 import { Svg, Path } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
@@ -123,14 +130,20 @@ const { width } = Dimensions.get("window");
 const scale = (size: number) => (width / 375) * size;
 
 export default function VerificationScreen() {
-  const [otp, setOtp] = useState('');
+  const [otp, setOtp] = useState("");
   const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
-      {/* Gold Button */}
       <LinearGradient
-        colors={["#FFD700", "#E6C200"]}
+        colors={[
+          "#B8860B", // Darker Golden Brown
+          "#C9A409", // Deep Gold
+          "#E6C200", // Rich Gold
+          "#FFD700", // Bright Gold
+        ]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
         style={styles.goldButton}
       >
         <TouchableOpacity style={styles.goldButtonInner}>
@@ -144,19 +157,26 @@ export default function VerificationScreen() {
           style={styles.iconWrapper}
           onPress={() => navigation.navigate("Chatbot" as never)}
         >
-          {chatIcon()}
+          {/* {chatIcon()} */}
+          <Ionicons name="chatbox-ellipses" size={22} color="#0E2A3A" />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.iconWrapper}
           onPress={() => navigation.navigate("Hash" as never)}
         >
-          {hashtagIcon()}
+          {/* {hashtagIcon()} */}
+          <Fontisto
+            name="hashtag"
+            size={18}
+            color="#0E2A3A"
+          />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.iconWrapper}
           onPress={() => console.log("Notification Icon Pressed")}
         >
-          {notificationIcon()}
+          {/* {notificationIcon()} */}
+          <Ionicons name="notifications" size={22} color="#0E2A3A" />
         </TouchableOpacity>
       </View>
     </View>
@@ -178,10 +198,34 @@ const chatIcon = () => (
 
 const hashtagIcon = () => (
   <Svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-    <Path d="M7 3L5 21" stroke="#0E2A3A" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    <Path d="M19 3L17 21" stroke="#0E2A3A" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    <Path d="M5 9H19" stroke="#0E2A3A" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    <Path d="M5 15H19" stroke="#0E2A3A" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    <Path
+      d="M7 3L5 21"
+      stroke="#0E2A3A"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path
+      d="M19 3L17 21"
+      stroke="#0E2A3A"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path
+      d="M5 9H19"
+      stroke="#0E2A3A"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path
+      d="M5 15H19"
+      stroke="#0E2A3A"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </Svg>
 );
 
@@ -228,6 +272,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: scale(20),
+  },
+  overlay: {
+    borderRadius: 10,
+    padding: 10,
+    alignItems: "center",
+    justifyContent: "center",
   },
   goldText: {
     fontSize: scale(14),

@@ -23,10 +23,6 @@ export const newChatAPI = async (
       throw new Error("Chat not Provided");
     }
 
-    console.log("chat Details: ", {
-      message: chatDetails.text,
-      ...chatDetails,
-    });
     const response = await apiClient.post("chatBot/create-chat", chatDetails, {
       headers: await setHeaders(),
     });

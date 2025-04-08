@@ -412,12 +412,12 @@ const BloodBankCard = () => {
       {/* Blood Bank Actions */}
       <View style={styles.actionsContainer}>
         <TouchableOpacity style={styles.button}>
-          <FontAwesome name="search" size={scale(22)} color="#0E3A5F" />
+          <FontAwesome name="search" size={scale(20)} color="#0E3A5F" />
           <Text style={styles.text}>Find Donor</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button}>
-          <FontAwesome5 name="tint" size={scale(22)} color="#0E3A5F" />
+          <FontAwesome5 name="tint" size={scale(20)} color="#0E3A5F" />
           <Text style={styles.text}>Campaign</Text>
         </TouchableOpacity>
       </View>
@@ -530,7 +530,7 @@ const styles = StyleSheet.create({
   text: {
     textAlign: "center",
     marginLeft: scale(8),
-    fontSize: scale(18),
+    fontSize: scale(16),
     fontWeight: "bold",
     color: "#0E3A5F",
   },

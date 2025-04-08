@@ -213,12 +213,19 @@ import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Dimensions } from
 import { useNavigation } from "@react-navigation/native";
 import { format, startOfMonth, endOfMonth, eachDayOfInterval } from "date-fns";
 import { FontAwesome } from "@expo/vector-icons";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "./types";
 
 const { width } = Dimensions.get("window");
 const scale = (size: number) => (width / 375) * size;
+type CalendarScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "CalendarScreen"
+>;
 
 const HorizontalCalendar: React.FC = () => {
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
+  const navigation = useNavigation<CalendarScreenNavigationProp>();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [daysInMonth, setDaysInMonth] = useState<Date[]>([]);
   const [dayWidth, setDayWidth] = useState(0);
@@ -267,9 +274,19 @@ const HorizontalCalendar: React.FC = () => {
         {daysInMonth.map((day, index) => {
           const isToday =
             format(day, "yyyy-MM-dd") === format(new Date(), "yyyy-MM-dd");
+            // const dateString = `${selectedYear}-${String(
+            //   monthIndex + 1
+            // ).padStart(2, "0")}-${String(dayNumber).padStart(2, "0")}`;
+            // const hasDocuments = documentsData.some(doc => doc.date === dateString);
+            const dateString = format(day, "yyyy-MM-dd");
           return (
             <TouchableOpacity
               key={index}
+              onPress={() =>
+                navigation.navigate("DocumentManagerScreen", {
+                  date: dateString,
+                })
+              }
               style={[styles.dayContainer, isToday && styles.today]}
               onLayout={(event) => {
                 if (index === 0) {
@@ -304,16 +321,18 @@ const styles = StyleSheet.create({
     marginBottom: scale(10),
   },
   monthText: {
-    fontSize: scale(22),
+    fontSize: scale(20),
     fontFamily: "Poppins",
+    marginLeft: 14,
     fontWeight: "bold",
     color: "#0F172A",
   },
   expandButton: {
-    padding: scale(8),
+    padding: scale(10),
     backgroundColor: "#0F172A",
+    marginRight: 12,
     borderRadius: scale(20),
-    width: scale(30),
+    width: scale(40),
     height: scale(30),
     alignItems: "center",
     justifyContent: "center",
@@ -323,18 +342,21 @@ const styles = StyleSheet.create({
   },
   dayContainer: {
     alignItems: "center",
-    padding: scale(8),
+    padding: scale(12),
     marginHorizontal: scale(5),
     borderRadius: scale(20),
     backgroundColor: "#E2E8F0",
   },
   today: {
     backgroundColor: "#0F172A",
+    padding: 14
   },
   dayText: {
     fontSize: scale(16),
     fontWeight: "bold",
+    // color: "black",
     color: "#1E293B",
+
   },
   weekdayText: {
     fontSize: scale(12),

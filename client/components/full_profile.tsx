@@ -39,7 +39,6 @@ const ProfileScreen: React.FC = () => {
         aspect: [4, 3],
         quality: 1,
       });
-      console.log("ImagePicker result:", result);
 
       if (!result.canceled) {
         setProfilePhoto(result.assets[0].uri);

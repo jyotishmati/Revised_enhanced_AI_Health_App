@@ -46,7 +46,7 @@ const App = () => {
       <Text style={styles.joinTitle}>Join Community</Text>
       
       {/* Underline */}
-      <View style={styles.underline} />
+      {/* <View style={styles.underline} /> */}
 
       <Text style={styles.joinSubtitle}>
         Join now to get all the information about Health Industry! (#)
@@ -64,6 +64,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: scale(18),
     marginTop: scale(-1),
+    // paddingBottom: 12
+    // marginBottom: 12
   },
   header: {
     flexDirection: "row",
@@ -127,6 +129,7 @@ const styles = StyleSheet.create({
     fontSize: scale(22),
     fontWeight: "bold",
     textAlign: "center",
+    marginBottom: 8,
     marginTop: scale(20),
     color: "#0F172A",
   },
@@ -146,7 +149,7 @@ const styles = StyleSheet.create({
   joinButton: {
     backgroundColor: "#0F172A",
     padding: scale(15),
-    borderRadius: scale(10),
+    borderRadius: scale(30),
     alignItems: "center",
     marginTop: scale(15),
   },

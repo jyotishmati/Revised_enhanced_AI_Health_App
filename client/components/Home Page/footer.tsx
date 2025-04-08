@@ -18,12 +18,12 @@ export default function Footer() {
       <View style={styles.container}>
         {/* Row of Icon Buttons */}
         <View style={styles.iconRow}>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('HomeTemplate' as never)}>
             <Ionicons name="home" size={scale(22)} color="#0E3A5F" /> 
             <Text style={styles.text}>Home</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Docters' as never)}>
             <MaterialIcons name="local-hospital" size={scale(22)} color="#0E3A5F" />
             <Text style={styles.text}>Doctors</Text>
           </TouchableOpacity>
@@ -35,7 +35,7 @@ export default function Footer() {
             <Text style={styles.text}></Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Analytics' as never)}>
             <MaterialIcons name="analytics" size={scale(22)} color="#0E3A5F" />
             <Text style={styles.text}>Analytics</Text>
           </TouchableOpacity>

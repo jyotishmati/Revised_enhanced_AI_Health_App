@@ -104,12 +104,20 @@ const BloodDonorList = ({ bloodType }: { bloodType: IBloodType }) => {
             <Text style={{ color: "#fff", fontSize: 16 }}>
               {bloodType.bloodType}
             </Text>
-        
           </View>
         </View>
       ) : (
-        <View>
-          <Text>No Nearest Donot</Text>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            // backgroundColor: "#333",
+          }}
+        >
+          <Text style={{ color: "grey", fontSize: 16, fontWeight: "bold" }}>
+            No Nearest Donor
+          </Text>
         </View>
       )}
 
@@ -146,7 +154,7 @@ const BloodDonorList = ({ bloodType }: { bloodType: IBloodType }) => {
         />
       ) : (
         <View>
-          <Text>No Near Donor</Text>
+          <Text></Text>
         </View>
       )}
     </View>

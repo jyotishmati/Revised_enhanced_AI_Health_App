@@ -53,7 +53,7 @@ export const storeDocument = async (
       uploadDir,
       `${fileId}${path.extname(file.originalname)}`
     );
-
+    console.log("File Path: ", filePath)
     try {
       fs.writeFileSync(filePath, file.buffer);
     } catch (fileError) {
@@ -73,6 +73,7 @@ export const storeDocument = async (
     });
 
     await document.save();
+    console.log("Document: ", document.fileId)
 
     res
       .status(201)
@@ -91,6 +92,7 @@ export const fetchDocumentByDate = async (
 ): Promise<void> => {
   try {
     const { date } = req.body;
+    console.log("Date:", date)
     if (!date) {
       res.status(400).json({ message: "Date not provided" });
       return;

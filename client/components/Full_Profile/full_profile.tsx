@@ -11,6 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
+import Gold_bar from "../Home Page/Gold_bar";
 
 const menuItems = [
   { id: "1", label: "My Health", icon: "heart-outline", screen: "MyHealth" },
@@ -24,7 +25,7 @@ const menuItems = [
   { id: "9", label: "Health Coin", icon: "wallet-outline", screen: "HealthCoin"},
   { id: "10", label: "Insurance", icon: "shield-checkmark-outline" },
   { id: "11", label: "Setting", icon: "settings-outline", screen: "Settings" },
-  { id: "12", label: "FAQ’s", icon: "help-circle-outline" },
+  { id: "12", label: "FAQ's", icon: "help-circle-outline" },
   { id: "13", label: "Terms & Conditions", icon: "document-text-outline" },
   { id: "14", label: "Log out", icon: "log-out-outline" },
 ];

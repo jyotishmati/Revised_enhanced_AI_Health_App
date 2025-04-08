@@ -58,7 +58,6 @@
 
 import React from "react";
 import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
-
 const { width } = Dimensions.get("window");
 
 const HumanAnatomy = () => {
@@ -67,23 +66,26 @@ const HumanAnatomy = () => {
       {/* Title */}
       <Text style={styles.title}>Overview Conditions</Text>
 
-      {/* Human Body Image with 3D Effect */}
-      <Image
-        source={require("../../assets/images/human_skeleton_2.png")}
-        style={styles.humanImage}
-        resizeMode="contain"
-      />
+      {/* Centered Human Body Image with 3D Effect */}
+      <View style={styles.imageWrapper}>
+        <Image
+          source={require("../../assets/images/human_updated.png")}
+          style={styles.humanImage}
+          resizeMode="contain"
+        />
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 0.04, // Allows it to take necessary space
+    flex: 1,
     backgroundColor: "#F5F7FA",
     alignItems: "center",
+    justifyContent: "center",
     paddingTop: 20,
-    // paddingBottom: 20, // Prevents cropping at the bottom
+    paddingBottom: 100
   },
   title: {
     fontSize: 20,
@@ -94,22 +96,28 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingLeft: 20,
   },
+  imageWrapper: {
+    width: width * 0.9,
+    aspectRatio: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   humanImage: {
-    width: width * 0.9, // Ensures it doesn't overflow
-    aspectRatio: 1, // Maintains proper proportions
-    marginTop: 28, // Moves image slightly lower
-    alignSelf: "stretch",
+    width: 300,
+    height: 400,
     transform: [
-            { perspective: 800 }, // Adds depth
-            { scaleX: 1.1 }, // Slight horizontal stretch
-            { scaleY: 1.15 }, // Slight vertical stretch
-            { rotateX: "-10deg" }, // Tilts the top backward
-          ],
+      { perspective: 800 },
+      { scaleX: 1.1 },
+      { scaleY: 1.15 },
+      { rotateX: "-10deg" },
+    ],
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.5,
     shadowRadius: 20,
-    elevation: 10, // Android shadow
+    elevation: 10,
+    marginTop: 120,
+    // marginBottom:70,
   },
 });
 

@@ -331,7 +331,6 @@ type Document = {
 };
 
 const DocumentManagerScreen: React.FC = () => {
- 
   const route = useRoute<DocumentManagerRouteProp>();
   const navigation = useNavigation();
   // Retrieve the date passed from CalendarScreen (if any)
@@ -365,8 +364,12 @@ const DocumentManagerScreen: React.FC = () => {
         date: selectedDateParam,
         uri: result.assets[0].uri,
       };
+      const existingData = await AsyncStorage.getItem("documents");
+      const existingDocuments: Document[] = existingData
+        ? JSON.parse(existingData)
+        : [];
 
-      const updatedDocuments = [...userDocuments, newDocument];
+      const updatedDocuments = [...existingDocuments, newDocument];
 
       await AsyncStorage.setItem("documents", JSON.stringify(updatedDocuments));
 
@@ -389,7 +392,6 @@ const DocumentManagerScreen: React.FC = () => {
 
       if (storedData) {
         const parsedData: Document[] = JSON.parse(storedData);
-
         const filteredDocuments = parsedData.filter(
           (doc) => doc.date === selectedDateParam
         );
@@ -411,6 +413,7 @@ const DocumentManagerScreen: React.FC = () => {
   useEffect(() => {
     handleFetch();
   }, []);
+
   const handleDocumentClick = async (document: any) => {
     try {
       if (!document.uri) {

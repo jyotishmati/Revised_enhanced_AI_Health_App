@@ -63,12 +63,14 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: scale(18),
-    fontWeight: "bold",
+    fontWeight: 700,
+    marginLeft: 12,
     color: "#1E293B",
   },
   seeAll: {
     fontSize: scale(14),
     color: "#64748B",
+    marginRight: 14
   },
   categoryButton: {
     width: scale(78),

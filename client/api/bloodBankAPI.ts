@@ -27,7 +27,6 @@ export const getNearestDonor = async (
       const response = await apiClient.post("blood-bank/get-nearest-donor", {bloodType }, {
         headers: await setHeaders(),
       });
-      console.log(response.data)
       return response.data
     //   return response.data.data;
     } catch (error: any) {

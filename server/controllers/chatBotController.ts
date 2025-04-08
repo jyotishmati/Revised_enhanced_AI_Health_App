@@ -15,7 +15,7 @@ interface AIService extends grpc.Client {
   ) => void;
 }
 
-const packageDefinition = protoLoader.loadSync("ai_service.proto", {
+const packageDefinition = protoLoader.loadSync("proto/ai_service.proto", {
   keepCase: true,
   longs: String,
   enums: String,
