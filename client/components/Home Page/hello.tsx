@@ -132,31 +132,30 @@
 
 // export default HealthCard;
 
-
 // import { loadUserData } from "@/api/IndexDB";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { Svg, Circle, Text as SvgText } from "react-native-svg";
 
-const { width } = Dimensions.get("window");
 import { navigate } from "expo-router/build/global-state/routing";
+const { width } = Dimensions.get("window");
 const scale = (size: number) => (width / 375) * size;
 
 const HealthCard = () => {
   const healthScore = 63;
-  const radius = 40; 
+  const radius = 40;
   const strokeWidth = 6;
   const circumference = 2 * Math.PI * radius;
   const progress = (healthScore / 100) * circumference;
   const [userData, setUserData] = useState<any>(null);
   const navigation = useNavigation();
   const [loading, setLoading] = useState(true);
-  
+
   // useEffect(() => {
   //   const fetchData = async () => {
   //     try {
-  //       const userDetails = await loadUserData(); 
+  //       const userDetails = await loadUserData();
   //       if(!userDetails){
   //         navigation.navigate("Profile" as never);
   //       }
@@ -165,7 +164,7 @@ const HealthCard = () => {
   //     } catch (error) {
   //       console.error("Failed to load user data:", error);
   //     } finally {
-  //       setLoading(false); 
+  //       setLoading(false);
   //     }
   //   };
 
@@ -179,13 +178,16 @@ const HealthCard = () => {
   //     </View>
   //   );
   // }
-  
+
   return (
     <View style={styles.container}>
       {/* Left Section */}
       <View style={styles.leftSection}>
         <View style={styles.greetingContainer}>
-          <Text style={styles.greetingText}> Hello {userData?.name || "Amaresh"}!</Text>
+          <Text style={styles.greetingText}>
+            {" "}
+            Hello {userData?.name || "Amaresh"}!
+          </Text>
           <Text style={styles.waveEmoji}>👋</Text>
         </View>
 
@@ -193,7 +195,8 @@ const HealthCard = () => {
 
         <Text style={styles.sectionTitle}>Health Score</Text>
         <Text style={styles.infoText}>
-          Blood Type: <Text style={styles.boldText}>{userData?.bloodType || "A+"}</Text>
+          Blood Type:{" "}
+          <Text style={styles.boldText}>{userData?.bloodType || "A+"}</Text>
         </Text>
         <Text style={styles.infoText}>
           Age: <Text style={styles.boldText}>{userData?.age || "24"}</Text>
@@ -205,7 +208,14 @@ const HealthCard = () => {
         <Text style={styles.healthScoreLabel}>Your Health Score</Text>
         <Svg width={scale(125)} height={scale(125)} viewBox="0 0 100 100">
           {/* Background Circle */}
-          <Circle cx="50" cy="50" r={radius} stroke="#E5E7EB" strokeWidth={strokeWidth} fill="none" />
+          <Circle
+            cx="50"
+            cy="50"
+            r={radius}
+            stroke="#E5E7EB"
+            strokeWidth={strokeWidth}
+            fill="none"
+          />
           {/* Progress Circle */}
           <Circle
             cx="50"
@@ -219,11 +229,24 @@ const HealthCard = () => {
             fill="none"
           />
           {/* Score Number */}
-          <SvgText x="50" y="48" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#0F3D59">
+          <SvgText
+            x="50"
+            y="58"
+            textAnchor="middle"
+            fontSize="35"
+            fontWeight="bold"
+            fill="#0F3D59"
+          >
             {healthScore}
           </SvgText>
           {/* "Out of 100" Text Below */}
-          <SvgText x="50" y="65" textAnchor="middle" fontSize="10" fill="#6B7280">
+          <SvgText
+            x="50"
+            y="70"
+            textAnchor="middle"
+            fontSize="9"
+            fill="#6B7280"
+          >
             Out of 100
           </SvgText>
         </Svg>
@@ -240,7 +263,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     backgroundColor: "#F3F4F6",
     // paddingVertical: scale(10),
-    paddingHorizontal: scale(15),
+    padding: scale(15),
     // borderRadius: 12,
     shadowColor: "#000",
     shadowOpacity: 0.1,
@@ -251,16 +274,16 @@ const styles = StyleSheet.create({
   },
   leftSection: {
     // flex: 1,
-    marginTop:8
+    marginTop: 8,
   },
   greetingText: {
-    fontSize: scale(22),
+    fontSize: scale(24),
     fontWeight: "bold",
     color: "#063247",
   },
   greetingContainer: {
     flexDirection: "row",
-    marginLeft: -6
+    marginLeft: -6,
     // alignItems: "center",
   },
   waveEmoji: {
@@ -269,7 +292,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: scale(12),
-  // marginLeft: 6,
+    // marginLeft: 6,
     // textAlign: "center",
     color: "#7D8A95",
     marginTop: scale(2),
@@ -286,7 +309,7 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins",
   },
   infoText: {
-    fontSize: scale(13),
+    fontSize: scale(10),
     color: "#6B7280",
     marginTop: scale(2),
   },
@@ -295,14 +318,14 @@ const styles = StyleSheet.create({
     marginTop: scale(10),
   },
   healthScoreLabel: {
-    fontSize: scale(14),
+    fontSize: scale(10),
     fontWeight: "bold",
     color: "#063247",
   },
   noteText: {
-    fontSize: scale(9),
+    fontSize: scale(7),
     color: "#9CA3AF",
-    fontStyle: "italic",
+    // fontStyle: "italic",
     marginTop: scale(2),
   },
 });

@@ -55,18 +55,17 @@
 
 // export default App;
 
-
 import React from "react";
 import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
 const { width } = Dimensions.get("window");
 
+const scale = (size: number) => (width / 375) * size;
+
 const HumanAnatomy = () => {
   return (
     <View style={styles.container}>
-      {/* Title */}
-      <Text style={styles.title}>Overview Conditions</Text>
+      <Text style={styles.title}>AI Agent</Text>
 
-      {/* Centered Human Body Image with 3D Effect */}
       <View style={styles.imageWrapper}>
         <Image
           source={require("../../assets/images/human_updated.png")}
@@ -84,17 +83,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#F5F7FA",
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: 20,
-    paddingBottom: 100
+    paddingTop: scale(20),
+    paddingBottom: scale(130),
+    // marginBottom: scale(100),
   },
   title: {
     fontSize: 20,
     fontWeight: "bold",
     color: "#0F172A",
     textAlign: "left",
-    marginBottom: 10,
+    marginBottom: scale(30),
     width: "100%",
-    paddingLeft: 20,
+    paddingLeft: scale(20),
   },
   imageWrapper: {
     width: width * 0.9,

@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet, FlatList, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  FlatList,
+  Dimensions,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 const { width } = Dimensions.get("window");
@@ -62,15 +69,15 @@ const styles = StyleSheet.create({
     marginBottom: scale(16),
   },
   title: {
-    fontSize: scale(18),
+    fontSize: scale(16),
     fontWeight: 700,
     marginLeft: 12,
     color: "#1E293B",
   },
   seeAll: {
-    fontSize: scale(14),
+    fontSize: scale(12),
     color: "#64748B",
-    marginRight: 14
+    marginRight: 14,
   },
   categoryButton: {
     width: scale(78),

@@ -98,7 +98,6 @@
 
 // export default HorizontalCalendar;
 
-
 // import React, { useState, useEffect } from "react";
 // import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from "react-native";
 // import { useNavigation } from "@react-navigation/native"; // For navigation
@@ -121,7 +120,6 @@
 //     navigation.navigate("CalendarExpand" as never); // Navigate to the full calendar screen
 //   };
 
-  
 //   return (
 //     <View style={styles.container}>
 //       {/* Header: Month, Year & Expand Button */}
@@ -207,9 +205,15 @@
 
 // export default HorizontalCalendar;
 
-
 import React, { useState, useEffect, useRef } from "react";
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { format, startOfMonth, endOfMonth, eachDayOfInterval } from "date-fns";
 import { FontAwesome } from "@expo/vector-icons";
@@ -245,7 +249,8 @@ const HorizontalCalendar: React.FC = () => {
       if (todayIndex >= 0) {
         const scrollViewWidth = width;
         const totalDayWidth = dayWidth + scale(10);
-        const offset = todayIndex * totalDayWidth + totalDayWidth / 2 - scrollViewWidth / 2;
+        const offset =
+          todayIndex * totalDayWidth + totalDayWidth / 2 - scrollViewWidth / 2;
         const clampedOffset = Math.max(offset, 0);
         scrollViewRef.current.scrollTo({ x: clampedOffset, animated: true });
       }
@@ -260,8 +265,11 @@ const HorizontalCalendar: React.FC = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.monthText}>{format(currentDate, "MMMM yyyy")}</Text>
-        <TouchableOpacity onPress={handleExpandPress} style={styles.expandButton}>
-          <FontAwesome name="expand" size={scale(16)} color="#FFFFFF" />
+        <TouchableOpacity
+          onPress={handleExpandPress}
+          style={styles.expandButton}
+        >
+          <FontAwesome name="expand" size={scale(14)} color="#FFFFFF" />
         </TouchableOpacity>
       </View>
 
@@ -274,11 +282,11 @@ const HorizontalCalendar: React.FC = () => {
         {daysInMonth.map((day, index) => {
           const isToday =
             format(day, "yyyy-MM-dd") === format(new Date(), "yyyy-MM-dd");
-            // const dateString = `${selectedYear}-${String(
-            //   monthIndex + 1
-            // ).padStart(2, "0")}-${String(dayNumber).padStart(2, "0")}`;
-            // const hasDocuments = documentsData.some(doc => doc.date === dateString);
-            const dateString = format(day, "yyyy-MM-dd");
+          // const dateString = `${selectedYear}-${String(
+          //   monthIndex + 1
+          // ).padStart(2, "0")}-${String(dayNumber).padStart(2, "0")}`;
+          // const hasDocuments = documentsData.some(doc => doc.date === dateString);
+          const dateString = format(day, "yyyy-MM-dd");
           return (
             <TouchableOpacity
               key={index}
@@ -297,7 +305,7 @@ const HorizontalCalendar: React.FC = () => {
               <Text style={[styles.dayText, isToday && styles.todayText]}>
                 {format(day, "d")}
               </Text>
-              <Text style={[styles.weekdayText, isToday && styles.todayText]}>
+              <Text style={[styles.weekdayText, isToday && styles.todayDay]}>
                 {format(day, "E")}
               </Text>
             </TouchableOpacity>
@@ -313,6 +321,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: scale(11),
     paddingVertical: scale(20),
     backgroundColor: "#FAFAFA",
+    fontFamily: "Poppins",
   },
   header: {
     flexDirection: "row",
@@ -321,19 +330,20 @@ const styles = StyleSheet.create({
     marginBottom: scale(10),
   },
   monthText: {
-    fontSize: scale(20),
+    fontSize: scale(16),
     fontFamily: "Poppins",
-    marginLeft: 14,
+    marginLeft: scale(14),
+    textTransform: "uppercase",
     fontWeight: "bold",
-    color: "#0F172A",
+    color: "#063247",
   },
   expandButton: {
     padding: scale(10),
-    backgroundColor: "#0F172A",
-    marginRight: 12,
+    backgroundColor: "#063247",
+    marginRight: scale(12),
     borderRadius: scale(20),
-    width: scale(40),
-    height: scale(30),
+    width: scale(24),
+    height: scale(24),
     alignItems: "center",
     justifyContent: "center",
   },
@@ -342,28 +352,37 @@ const styles = StyleSheet.create({
   },
   dayContainer: {
     alignItems: "center",
-    padding: scale(12),
+    paddingVertical: scale(12),
+    paddingHorizontal: scale(5),
     marginHorizontal: scale(5),
-    borderRadius: scale(20),
-    backgroundColor: "#E2E8F0",
+    borderRadius: scale(100),
+    backgroundColor: "#FAFAFA",
   },
   today: {
     backgroundColor: "#0F172A",
-    padding: 14
+    padding: scale(14),
   },
   dayText: {
-    fontSize: scale(16),
+    fontSize: scale(12),
     fontWeight: "bold",
     // color: "black",
     color: "#1E293B",
-
   },
   weekdayText: {
     fontSize: scale(12),
     color: "#64748B",
   },
   todayText: {
-    color: "#F1F5F9",
+    backgroundColor: "#C3E7FA",
+    paddingVertical: scale(7),
+    paddingHorizontal: scale(8),
+    textAlign: "center",
+    borderRadius: scale(100),
+    color: "#063247",
+    // marginBottom: scale(5),
+  },
+  todayDay: {
+    color: "#fff",
   },
 });
 
