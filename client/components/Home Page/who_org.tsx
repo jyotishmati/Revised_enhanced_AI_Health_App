@@ -99,9 +99,15 @@
 
 // export default NewsCard;
 
-
 import React from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+} from "react-native";
 
 const { width } = Dimensions.get("window");
 const scale = (size: number) => (width / 375) * size;
@@ -124,14 +130,15 @@ const NewsCard = () => {
       <View style={styles.card}>
         {/* Image */}
         <Image
-          source={require('../../assets/images/WHO.jpg')} // Replace with your image
+          source={require("../../assets/images/WHO.jpg")} // Replace with your image
           style={styles.image}
         />
 
         {/* News Content */}
         <View style={styles.textContainer}>
           <Text style={styles.title}>
-            WHO urges rapid access to mpox diagnostic tests, invites manufacturers to emergency review
+            WHO urges rapid access to mpox diagnostic tests, invites
+            manufacturers to emergency review
           </Text>
           <Text style={styles.date}>29 August 2024</Text>
         </View>
@@ -146,7 +153,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     paddingHorizontal: scale(16),
     paddingVertical: scale(10),
-    marginBottom: scale(-20),
+    marginBottom: scale(-22),
   },
   horizontalBar: {
     height: scale(2),
@@ -161,18 +168,18 @@ const styles = StyleSheet.create({
     marginBottom: scale(10),
   },
   headerText: {
-    fontSize: scale(20),
+    fontSize: scale(16),
     fontWeight: "bold",
-    color: "#111827",
+    color: "#063247",
   },
   seeAllText: {
-    fontSize: scale(14),
+    fontSize: scale(12),
     color: "#6B7280",
   },
   card: {
     marginTop: scale(11),
     height: scale(280),
-    backgroundColor: "#fff",
+    backgroundColor: "#F1F1F1",
     borderRadius: scale(12),
     overflow: "hidden",
     shadowColor: "#000",
@@ -193,7 +200,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: scale(14),
     fontWeight: "bold",
-    color: "#1F2937",
+    color: "#063247",
     marginBottom: scale(6),
   },
   date: {

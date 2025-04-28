@@ -79,79 +79,80 @@ const Doctors = () => {
           <HealthCard />
         </ScrollView>
         <Calendar />
-
-        {items?.map((item) => (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("DocterDetails" as any, { id: item.id })
-            }
-            key={item.id}
-          >
-            <View style={styles.card}>
-              <Image
-                source={{ uri: item.image }}
-                style={{
-                  width: scale(90),
-                  height: scale(100),
-                  borderRadius: scale(12),
-                }}
-              />
-              <View>
-                <Text
+        <View style={{ paddingHorizontal: scale(30) }}>
+          {items?.map((item) => (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("DocterDetails" as any, { id: item.id })
+              }
+              key={item.id}
+            >
+              <View style={styles.card}>
+                <Image
+                  source={{ uri: item.image }}
                   style={{
-                    color: "#063247",
-                    fontWeight: "bold",
-                    fontSize: scale(16),
+                    width: scale(90),
+                    height: scale(100),
+                    borderRadius: scale(12),
                   }}
-                >
-                  Dr. {item.firstName} {item.lastName}
-                </Text>
-                <Text
-                  style={{
-                    color: "#7D8A95",
-                    fontWeight: "500",
-                    fontSize: scale(10),
-                    marginBottom: scale(15),
-                  }}
-                >
-                  {item.specialist}
-                </Text>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Ionicons
-                    name={"location-outline"}
-                    size={scale(12)}
-                    color="#4B5563"
-                    style={{ marginRight: scale(6) }}
-                  />
+                />
+                <View>
                   <Text
                     style={{
-                      fontSize: scale(14),
-                      color: "#7D8A95",
+                      color: "#063247",
+                      fontWeight: "bold",
+                      fontSize: scale(16),
                     }}
                   >
-                    {item.location}
+                    Dr. {item.firstName} {item.lastName}
                   </Text>
-                </View>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Ionicons
-                    name={"star"}
-                    size={scale(12)}
-                    color="#4B5563"
-                    style={{ marginRight: scale(6) }}
-                  />
                   <Text
                     style={{
-                      fontSize: scale(14),
                       color: "#7D8A95",
+                      fontWeight: "500",
+                      fontSize: scale(10),
+                      marginBottom: scale(15),
                     }}
                   >
-                    {item.experience}+ Experience
+                    {item.specialist}
                   </Text>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Ionicons
+                      name={"location-outline"}
+                      size={scale(12)}
+                      color="#4B5563"
+                      style={{ marginRight: scale(6) }}
+                    />
+                    <Text
+                      style={{
+                        fontSize: scale(14),
+                        color: "#7D8A95",
+                      }}
+                    >
+                      {item.location}
+                    </Text>
+                  </View>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Ionicons
+                      name={"star"}
+                      size={scale(12)}
+                      color="#4B5563"
+                      style={{ marginRight: scale(6) }}
+                    />
+                    <Text
+                      style={{
+                        fontSize: scale(14),
+                        color: "#7D8A95",
+                      }}
+                    >
+                      {item.experience}+ Experience
+                    </Text>
+                  </View>
                 </View>
               </View>
-            </View>
-          </TouchableOpacity>
-        ))}
+            </TouchableOpacity>
+          ))}
+        </View>
       </ScrollView>
       <Footer />
     </View>
@@ -178,8 +179,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff", // Set the background to match the design
   },
   scrollView: {
-      flex: 1,
-      // marginTop: 155, // Adjust margin to prevent content from going under fixed headers
+    flex: 1,
+    // marginTop: 155, // Adjust margin to prevent content from going under fixed headers
   },
 
   card: {

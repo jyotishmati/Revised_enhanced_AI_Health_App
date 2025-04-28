@@ -5,7 +5,7 @@ import {
   ImageBackground,
   TouchableOpacity,
   StyleSheet,
-  Dimensions
+  Dimensions,
 } from "react-native";
 
 const { width } = Dimensions.get("window");
@@ -19,7 +19,7 @@ const App = () => {
         <Text style={styles.headerText}>Articles</Text>
         <Text style={styles.seeAll}>See all</Text>
       </View>
-      
+
       {/* Article Card */}
       <ImageBackground
         source={require("../../assets/images/article.jpg")}
@@ -44,7 +44,7 @@ const App = () => {
 
       {/* Join Community Section */}
       <Text style={styles.joinTitle}>Join Community</Text>
-      
+
       {/* Underline */}
       {/* <View style={styles.underline} /> */}
 
@@ -77,8 +77,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   seeAll: {
-    fontSize: scale(14),
-    color: "#007AFF",
+    fontSize: scale(12),
+    color: "#7D8A95",
   },
   articleCard: {
     width: "100%",
@@ -92,21 +92,24 @@ const styles = StyleSheet.create({
   overlay: {
     flex: 1,
     backgroundColor: "rgba(0, 0, 0, 0.2)",
+    // flexDirection: "column",
     justifyContent: "flex-end",
     alignItems: "flex-start",
     paddingHorizontal: scale(15),
     paddingBottom: scale(15),
+    // padding: scale(50),
   },
   articleTitle: {
     color: "#fff",
-    fontSize: scale(20),
+    fontSize: scale(19),
     fontWeight: "bold",
     maxWidth: scale(200),
+    marginBottom: scale(12),
   },
   articleSubtitle: {
     color: "#fff",
-    fontSize: scale(14),
-    marginBottom: scale(45),
+    fontSize: scale(12),
+    marginBottom: scale(25),
     maxWidth: scale(200),
   },
   dotsContainer: {
@@ -156,7 +159,7 @@ const styles = StyleSheet.create({
   joinButtonText: {
     color: "#fff",
     fontSize: scale(16),
-    fontWeight: "bold",
+    // fontWeight: "bold",
   },
 });
 

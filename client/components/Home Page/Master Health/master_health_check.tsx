@@ -53,9 +53,14 @@
 
 // export default MasterHealthVault;
 
-
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 const { width } = Dimensions.get("window");
@@ -81,22 +86,23 @@ const MasterHealthVault = () => {
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    backgroundColor: "#023047", 
+    backgroundColor: "#023047",
     // borderRadius: 60,
   },
   card: {
     flexDirection: "row",
-    alignItems: "center", 
+    alignItems: "center",
     justifyContent: "space-between",
     // backgroundColor: "#023047",
     paddingHorizontal: scale(16),
-    minHeight: scale(50), 
+    minHeight: scale(60),
     // borderRadius: 20,
     width: "100%",
   },
+
   text: {
     color: "white",
-    fontSize: scale(18), // Reduced text size
+    fontSize: scale(16), // Reduced text size
     fontWeight: "bold",
     textAlign: "center",
   },

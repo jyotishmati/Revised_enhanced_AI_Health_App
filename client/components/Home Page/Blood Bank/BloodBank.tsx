@@ -27,7 +27,7 @@
 //       <View style={styles.card}>
 //         {/* Left - Image */}
 //         <Image
-//           source={require("../../../assets/images/bloodbank.jpg")} 
+//           source={require("../../../assets/images/bloodbank.jpg")}
 //           style={styles.image}
 //         />
 
@@ -148,7 +148,6 @@
 
 // export default BloodBankCard;
 
-
 // import React from "react";
 // import {
 //   View,
@@ -178,7 +177,7 @@
 //       <View style={styles.card}>
 //         {/* Left - Image */}
 //         <Image
-//           source={require("../../../assets/images/bloodbank.jpg")} 
+//           source={require("../../../assets/images/bloodbank.jpg")}
 //           style={styles.image}
 //         />
 
@@ -342,7 +341,6 @@
 
 // export default BloodBankCard;
 
-
 import React from "react";
 import {
   View,
@@ -350,7 +348,7 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
-  Dimensions
+  Dimensions,
 } from "react-native";
 import { FontAwesome, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -365,8 +363,11 @@ const BloodBankCard = () => {
       {/* Header Section */}
       <View style={styles.header}>
         <Text style={styles.headerText}>Blood Bank</Text>
-        <TouchableOpacity style={styles.expandIcon} onPress={() => navigation.navigate("ExpandBB" as never)}>
-          <FontAwesome name="expand" size={scale(14)} color="#FFFFFF" />
+        <TouchableOpacity
+          style={styles.expandIcon}
+          onPress={() => navigation.navigate("ExpandBB" as never)}
+        >
+          <FontAwesome name="expand" size={scale(12)} color="#FFFFFF" />
         </TouchableOpacity>
       </View>
 
@@ -381,11 +382,15 @@ const BloodBankCard = () => {
         {/* Right - Details */}
         <View style={styles.details}>
           <Text style={styles.title}>
-            Emergency <Text style={styles.bold}>B+ Blood Needed</Text>
+            <Text style={styles.bold}>Emergency B+ Blood Needed</Text>
           </Text>
 
           <View style={styles.infoRow}>
-            <MaterialIcons name="location-on" size={scale(16)} color="#6B7280" />
+            <MaterialIcons
+              name="location-on"
+              size={scale(16)}
+              color="#6B7280"
+            />
             <Text style={styles.infoText}>MS Ramaiah Hospital</Text>
           </View>
 
@@ -440,15 +445,15 @@ const styles = StyleSheet.create({
     marginBottom: scale(10),
   },
   headerText: {
-    fontSize: scale(18),
+    fontSize: scale(16),
     fontWeight: "bold",
-    color: "#0E3A5F",
+    color: "#063247",
   },
   expandIcon: {
-    width: scale(28),
-    height: scale(28),
+    width: scale(24),
+    height: scale(24),
     borderRadius: scale(14),
-    backgroundColor: "#0E3A5F",
+    backgroundColor: "#063247",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -476,8 +481,8 @@ const styles = StyleSheet.create({
     color: "#1F2937",
   },
   bold: {
-    fontWeight: "bold",
-    color: "#1F2937",
+    fontWeight: "500",
+    color: "#063247",
   },
   infoRow: {
     flexDirection: "row",
@@ -485,8 +490,8 @@ const styles = StyleSheet.create({
     marginTop: scale(3),
   },
   infoText: {
-    fontSize: scale(14),
-    color: "#6B7280",
+    fontSize: scale(12),
+    color: "#7D8A95",
     marginLeft: scale(5),
   },
   pagination: {
@@ -498,11 +503,11 @@ const styles = StyleSheet.create({
     width: scale(8),
     height: scale(8),
     borderRadius: scale(4),
-    backgroundColor: "#D1D5DB",
+    backgroundColor: "#E5E7EB",
     marginHorizontal: scale(4),
   },
   activeDot: {
-    backgroundColor: "#0E3A5F",
+    backgroundColor: "#063247",
     width: scale(35),
   },
   actionsContainer: {
@@ -515,7 +520,7 @@ const styles = StyleSheet.create({
   button: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#F8F9FB",
+    backgroundColor: "#F1F1F1",
     paddingVertical: scale(18),
     paddingHorizontal: scale(24),
     borderRadius: scale(20),
@@ -530,9 +535,9 @@ const styles = StyleSheet.create({
   text: {
     textAlign: "center",
     marginLeft: scale(8),
-    fontSize: scale(16),
+    fontSize: scale(14),
     fontWeight: "bold",
-    color: "#0E3A5F",
+    color: "#063247",
   },
 });
 
