@@ -17,7 +17,7 @@ interface IUserSchema {
   createdAt?: Date;
   idType?: string;
   bloodShare: boolean;
-  currCoordinates: ICoordinates;
+  currCoordinates?: ICoordinates;
   idNumber?: number;
   nameCard?: string;
   namePhysician?: string;
@@ -40,8 +40,8 @@ const UserSchema: Schema<IUserSchema> = new Schema(
     gender: { type: String, enum: ["Male", "Female", "other"] },
     bloodShare: { type: Boolean },
     currCoordinates: {
-      type: { type: String, enum: ["Point"], required: true },
-      coordinates: { type: [Number], required: true, index: "2dsphere" },
+      type: { type: String, enum: ["Point"]},
+      coordinates: { type: [Number],  index: "2dsphere" },
     },
     dob: { type: Date },
     age: { type: Number },

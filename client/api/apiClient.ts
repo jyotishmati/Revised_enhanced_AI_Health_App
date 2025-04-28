@@ -3,7 +3,7 @@ import { getItem } from "./tokenOperation";
 import { currentLocation } from "./other";
 // process.env.EXPO_PUBLIC_BACKEND_LINK || "http://localhost:5000/v1",
 const apiClient = axios.create({
-  baseURL: process.env.EXPO_PUBLIC_BACKEND_LINK || "http://localhost:5000/v1",
+  baseURL: "http://localhost:5000/v1",
 });
 
 export const setHeaders = async () => {
