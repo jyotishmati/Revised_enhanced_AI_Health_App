@@ -39,6 +39,7 @@ import BookAppointment from "@/components/Doctor_Page/BookAppointment";
 import AppointmentConfirmation from "@/components/Doctor_Page/AppointmentConfirmation";
 import FitnessScreen from "@/components/Analytics/analytics";
 import OrganHealthScreen from "@/components/Analytics/Organ_check";
+import HeartModelViewer from "@/components/Body_Parts/Heart/heart";
 
 const Stack = createNativeStackNavigator();
 
@@ -92,7 +93,7 @@ export default function MainNavigator() {
       <Stack.Screen name="Welcome3" component={WelcomeScreen3} />
       <Stack.Screen name="Login/Signup" component={LoginScreen} />
       <Stack.Screen name="Login(OTP)" component={LoginScreenOTP} />
-      <Stack.Screen name="HomeTemplate" component={HomeTemplate} />
+      <Stack.Screen name="HomeTemplate" component={HeartModelViewer} />
       <Stack.Screen name="Chatbot" component={Chatbot} />
       <Stack.Screen
         name="Profile"
