@@ -30,7 +30,7 @@ export const emailPasswordVerify = async (
       res.status(400).json({ message: "Email or Password is missing" });
       return;
     }
-
+    
     let user = await UserModel.findOne({ email }).select("+password");
 
     if (!user) {
@@ -127,6 +127,7 @@ export const protect = async (
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
       id: string;
     };
+    console.log(decoded)
 
     const currentUser = await UserModel.findById(decoded.id);
     if (!currentUser) {
