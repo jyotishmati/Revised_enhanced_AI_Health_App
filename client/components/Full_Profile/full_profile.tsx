@@ -6,12 +6,13 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  Animated,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
-import Gold_bar from "../Home Page/Gold_bar";
+import { useResponsive } from "../../hooks/useresponsive";
 
 const menuItems = [
   { id: "1", label: "My Health", icon: "heart-outline", screen: "MyHealth" },
@@ -22,7 +23,7 @@ const menuItems = [
   { id: "6", label: "Fitness", icon: "barbell-outline", screen: "Fitness" },
   { id: "7", label: "Medical Reports", icon: "document-text-outline", screen: "MedicalReports" },
   { id: "8", label: "Connect Device", icon: "watch-outline", screen: "ConnectDevice" },
-  { id: "9", label: "Health Coin", icon: "wallet-outline", screen: "HealthCoin"},
+  { id: "9", label: "Health Coin", icon: "wallet-outline", screen: "HealthCoin" },
   { id: "10", label: "Insurance", icon: "shield-checkmark-outline" },
   { id: "11", label: "Setting", icon: "settings-outline", screen: "Settings" },
   { id: "12", label: "FAQ's", icon: "help-circle-outline" },
@@ -33,6 +34,24 @@ const menuItems = [
 const ProfileScreen: React.FC = () => {
   const navigation = useNavigation();
   const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
+  const { scale, vs, ms } = useResponsive();
+  const slideAnim = new Animated.Value(100);
+  const fadeAnim = new Animated.Value(0);
+
+  React.useEffect(() => {
+    Animated.parallel([
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, []);
 
   const handleUploadPhoto = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -54,45 +73,73 @@ const ProfileScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Back Button */}
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Ionicons name="arrow-back" size={24} color="#374151" />
+      <TouchableOpacity
+        style={[styles.backButton, { padding: scale(8), borderRadius: scale(20) }]}
+        onPress={() => navigation.goBack()}
+      >
+        <Ionicons name="arrow-back" size={ms(24)} color="#374151" />
       </TouchableOpacity>
 
-      {/* Profile Section */}
-      <View style={styles.topSection}>
+      <Animated.View
+        style={[styles.topSection, {
+          padding: scale(15),
+          borderRadius: scale(12),
+          marginTop: vs(50),
+          marginBottom: vs(20),
+          opacity: fadeAnim,
+          transform: [{ translateY: slideAnim }],
+        }]}
+      >
         {profilePhoto ? (
           <TouchableOpacity onPress={handleUploadPhoto}>
-            <Image source={{ uri: profilePhoto }} style={styles.profileImage} />
+            <Image
+              source={{ uri: profilePhoto }}
+              style={[styles.profileImage, {
+                width: scale(80),
+                height: scale(80),
+                borderRadius: scale(40),
+              }]}
+            />
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity style={styles.photoPlaceholder} onPress={handleUploadPhoto}>
-            <Feather name="plus" size={24} color="#999" />
+          <TouchableOpacity
+            style={[styles.photoPlaceholder, {
+              width: scale(80),
+              height: scale(80),
+              borderRadius: scale(40),
+            }]}
+            onPress={handleUploadPhoto}
+          >
+            <Feather name="plus" size={ms(24)} color="#999" />
           </TouchableOpacity>
         )}
 
         <View style={styles.userInfo}>
-          <Text style={styles.userName}>Nandan</Text>
-          <Text style={styles.userDetails}>Mobile : 9876543210</Text>
-          <Text style={styles.userDetails}>MID : NS1234567890</Text>
+          <Text style={[styles.userName, { fontSize: ms(18), marginBottom: vs(4) }]}>Nandan</Text>
+          <Text style={[styles.userDetails, { fontSize: ms(14) }]}>Mobile : 9876543210</Text>
+          <Text style={[styles.userDetails, { fontSize: ms(14) }]}>MID : NS1234567890</Text>
         </View>
-      </View>
+      </Animated.View>
 
-      {/* Menu Items */}
       <ScrollView style={styles.menuContainer} showsVerticalScrollIndicator={false}>
         {menuItems.map((item) => (
           <TouchableOpacity
             key={item.id}
-            style={styles.menuItem}
+            style={[styles.menuItem, { paddingVertical: vs(14), paddingHorizontal: scale(16),
+              borderRadius: scale(10),
+              marginBottom: vs(8),}]}
             onPress={() => {
-              if (item.screen) {
-                navigation.navigate(item.screen as never);
-              }
+              if (item.screen) navigation.navigate(item.screen as never);
             }}
           >
-            <Ionicons name={item.icon as any} size={22} color="#4B5563" style={styles.menuIcon} />
-            <Text style={styles.menuLabel}>{item.label}</Text>
-            <Feather name="chevron-right" size={22} color="#9CA3AF" style={styles.chevronIcon} />
+            <Ionicons
+              name={item.icon as any}
+              size={ms(22)}
+              color="#4B5563"
+              style={{ marginRight: scale(14) }}
+            />
+            <Text style={[styles.menuLabel, { fontSize: ms(16) }]}>{item.label}</Text>
+            <Feather name="chevron-right" size={ms(22)} color="#9CA3AF" style={{ marginLeft: "auto" }} />
           </TouchableOpacity>
         ))}
       </ScrollView>
@@ -115,31 +162,19 @@ const styles = StyleSheet.create({
     left: 16,
     zIndex: 10,
     backgroundColor: "#F3F4F6",
-    padding: 8,
-    borderRadius: 20,
   },
   topSection: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 50,
-    marginBottom: 20,
     backgroundColor: "#F9FAFB",
-    padding: 15,
-    borderRadius: 12,
   },
   photoPlaceholder: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
     backgroundColor: "#E5E7EB",
     justifyContent: "center",
     alignItems: "center",
     marginRight: 16,
   },
   profileImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
     marginRight: 16,
     resizeMode: "cover",
   },
@@ -147,13 +182,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   userName: {
-    fontSize: 18,
     fontWeight: "bold",
     color: "#1F2937",
-    marginBottom: 4,
   },
   userDetails: {
-    fontSize: 14,
     color: "#6B7280",
     marginBottom: 2,
   },
@@ -164,19 +196,18 @@ const styles = StyleSheet.create({
   menuItem: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 14,
-    borderBottomWidth: 1,
-    borderBottomColor: "#F3F4F6",
+    justifyContent: "space-between",
+    backgroundColor: "#FFFFFF",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
   },
-  menuIcon: {
-    marginRight: 14,
-  },
+  
   menuLabel: {
-    fontSize: 16,
     color: "#1F2937",
     flex: 1,
   },
-  chevronIcon: {
-    marginLeft: "auto",
-  },
 });
+

@@ -3,27 +3,24 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity, // Keep if needed elsewhere, otherwise remove
-  ScrollView, // Import ScrollView
+  ScrollView,
   SafeAreaView,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons"; // Keep if needed elsewhere
-import { useNavigation } from "@react-navigation/native"; // Keep if needed
+import { useNavigation } from "@react-navigation/native";
 import Gold_bar from "../Home Page/Gold_bar";
 import Navigation from "../Home Page/Navigation_Bar";
 import User from "../Home Page/hello";
 import OrganHealth from "./Organ_Health";
 import Calendar from "../Home Page/Calendar/calendar";
-import SurgicalHistory from "./surgical_history"; // <-- Import the new component
+import SurgicalHistory from "./surgical_history";
 import UpcomingAppointments from "./upcoming_appointments";
 import Footer from "../Home Page/footer";
 import HumanAnatomy from "../Home Page/Human_Anatomy";
+import { useResponsive } from "../../hooks/useresponsive";
 
 const FitnessScreen: React.FC = () => {
-  const navigation = useNavigation(); // Keep if needed
-
-  // Assuming Gold_bar and Navigation are fixed headers outside the scroll view
-  // Assuming User, OrganHealth, Calendar, and SurgicalHistory should scroll
+  const navigation = useNavigation();
+  const { scale, vs } = useResponsive();
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -31,9 +28,9 @@ const FitnessScreen: React.FC = () => {
       <Navigation />
 
       <ScrollView
-        style={styles.scrollView} // Style for the ScrollView container
-        contentContainerStyle={styles.scrollContentContainer} // Style for the content inside
-        showsVerticalScrollIndicator={false} // Optional: hide scroll bar
+        style={styles.scrollView}
+        contentContainerStyle={[styles.scrollContentContainer, { paddingBottom: vs(30) }]}
+        showsVerticalScrollIndicator={false}
       >
         <User />
         <OrganHealth />
@@ -46,20 +43,18 @@ const FitnessScreen: React.FC = () => {
     </SafeAreaView>
   );
 };
+
 export default FitnessScreen;
 
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#FFFFFF", // Set a background color for the whole screen if needed
+    backgroundColor: "#FFFFFF",
   },
   scrollView: {
-    flex: 1, // Make ScrollView take up remaining space below fixed headers
+    flex: 1,
   },
   scrollContentContainer: {
-    paddingBottom: 30, // Add padding at the bottom of scrolled content
-    // paddingHorizontal: 0 // If SurgicalHistory adds its own padding, keep this 0
-    // Otherwise, add horizontal padding here: e.g., paddingHorizontal: 20
+    // Add vertical space dynamically using vs() if needed
   },
-  // Add any other styles needed for FitnessScreen itself
 });
