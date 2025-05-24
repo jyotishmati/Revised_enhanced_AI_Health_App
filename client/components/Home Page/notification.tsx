@@ -304,11 +304,11 @@ export default function NotificationsScreen() {
             <Ionicons name="arrow-back" size={ms(24)} color="#0F172A" />
           </TouchableOpacity>
           <View>
-            <Text style={[styles.title, { fontSize: ms(22) }]}>Notifications</Text>
+            <Text style={[styles.title, { fontSize: ms(22), marginTop: vs(32) }]}>Notifications</Text>
             <Text style={[styles.subtitle, { fontSize: ms(16) }]}>You have 12 Total Notifications!</Text>
           </View>
-          <View style={[styles.plusContainer, { width: ms(36), height: ms(36), borderRadius: ms(18) }]}>
-            <Text style={[styles.plusText, { fontSize: ms(14) }]}>+2</Text>
+          <View style={[styles.plusContainer, { width: ms(36), height: ms(36), borderRadius: ms(18), marginTop: vs(32) }]}>
+            <Text style={[styles.plusText, { fontSize: ms(14),  }]}>+2</Text>
           </View>
         </View>
 

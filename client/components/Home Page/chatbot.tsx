@@ -111,14 +111,14 @@ const ChatScreen = () => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{ flex: 1, backgroundColor: "#f8f9fa", padding: ms(16) }}
     >
-      <View style={styles.header}>
+      <View style={[styles.header, {marginTop: vs(12)}]}>
         <FontAwesome
           name="arrow-left"
           size={ms(20)}
           color="black"
           onPress={() => navigation.goBack()}
         />
-        <Text style={[styles.title, { fontSize: ms(22) }]}>Med AI Bot</Text>
+        <Text style={[styles.title, { fontSize: ms(22), marginTop: vs(10) }]}>Med AI Bot</Text>
         <View style={{ width: ms(20) }} />
       </View>
 

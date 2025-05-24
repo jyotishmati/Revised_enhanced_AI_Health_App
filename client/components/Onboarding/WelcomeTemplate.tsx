@@ -156,6 +156,7 @@ export default function WelcomeTemplate({
               width: "100%",
               height: isPortrait ? vs(420) : "55%",
               paddingRight: scale(20),
+              marginTop: vs(0)
             }}
           >
             <Image
